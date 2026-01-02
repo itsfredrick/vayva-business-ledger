@@ -17,7 +17,7 @@ export function LoginForm() {
         <Card className="w-[350px]">
             <CardHeader>
                 <CardTitle>Login</CardTitle>
-                <CardDescription>Enter your username below to login to Vayva Business Ledger.</CardDescription>
+                <CardDescription>Enter your username below to login to Kool Joo Business Ledger.</CardDescription>
             </CardHeader>
             <form action={formAction}>
                 <input type="hidden" name="redirectTo" value={callbackUrl} />

@@ -39,7 +39,7 @@ function ExportCard({ title, type, description }: { title: string, type: "SALES"
 
             // Simple CSV conversion
             let csvContent = "data:text/csv;charset=utf-8,";
-            csvContent += `VAYVA BUSINESS LEDGER - ${type} REPORT\n`;
+            csvContent += `KOOL JOO BUSINESS LEDGER - ${type} REPORT\n`;
             csvContent += `Company: Kool Joo\n`;
             csvContent += `Period: ${from} to ${to}\n\n`;
 

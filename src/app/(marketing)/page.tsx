@@ -6,7 +6,7 @@ export default function LandingPage() {
     <div className="flex flex-col min-h-screen">
       <header className="px-4 lg:px-6 h-14 flex items-center border-b">
         <Link className="flex items-center justify-center font-bold text-xl" href="#">
-          Vayva Business Ledger
+          Kool Joo Business Ledger
         </Link>
         <nav className="ml-auto flex gap-4 sm:gap-6">
           <Link className="text-sm font-medium hover:underline underline-offset-4" href="/login">
@@ -37,7 +37,7 @@ export default function LandingPage() {
       </main>
       <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t">
         <p className="text-xs text-gray-500 dark:text-gray-400">
-          © {new Date().getFullYear()} Vayva Business Ledger. All rights reserved.
+          © {new Date().getFullYear()} Kool Joo Business Ledger. All rights reserved.
         </p>
       </footer>
     </div>

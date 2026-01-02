@@ -37,7 +37,7 @@ export async function getDashboardStats(range: DashboardRange) {
     });
 
     // Office Sales
-    const officeStats = await prisma.purewaterOfficeSale.aggregate({
+    const officeStats = await prisma.koolJooOfficeSale.aggregate({
         where: {
             day: { date: { gte: from, lte: to } }
         },
@@ -197,15 +197,18 @@ export async function getExportData(type: "SALES" | "EXPENSES", from: Date, to: 
 
     if (type === "SALES") {
         // Fetch DriverSales and OfficeSales
-        const driverDays = await prisma.driverDay.findMany({
-            where: { day: { date: { gte: from, lte: to } } },
-            include: { driverProfile: true, day: true }
+        const days = await prisma.dayRecord.findMany({
+            where: { date: { gte: from, lte: to } },
+            include: {
+                driverDays: { include: { driverProfile: true } },
+                officeSales: true,
+                expenses: true
+            }
         });
 
-        const officeSales = await prisma.purewaterOfficeSale.findMany({
-            where: { day: { date: { gte: from, lte: to } } },
-            include: { day: true }
-        });
+        // Flatten the data for easier processing if needed, or return as is
+        const driverDays = days.flatMap(day => day.driverDays.map(dd => ({ ...dd, day: day })));
+        const officeSales = days.flatMap(day => day.officeSales.map(os => ({ ...os, day: day })));
 
         return { driverDays, officeSales };
     }

@@ -1,6 +1,6 @@
-# Deployment Guide: Vayva Business Ledger
+# Deployment Guide: Kool Joo Business Ledger
 
-This guide explains how to deploy **Vayva Business Ledger** to GitHub and Vercel.
+This guide explains how to deploy **Kool Joo Business Ledger** to GitHub and Vercel.
 
 ## 1. GitHub Setup
 
@@ -10,7 +10,7 @@ If you haven't already, turn your local project into a Git repository:
 ```bash
 git init
 git add .
-git commit -m "Initial commit: Vayva Business Ledger"
+git commit -m "Initial commit: Kool Joo Business Ledger"
 ```
 
 ### Push to GitHub

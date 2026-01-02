@@ -25,7 +25,7 @@ export async function getOfficeSales() {
     // If no open day, maybe we return null or empty list?
     if (!day) return { sales: [], dayStatus: "CLOSED", dayId: null };
 
-    const sales = await prisma.purewaterOfficeSale.findMany({
+    const sales = await prisma.koolJooOfficeSale.findMany({
         where: { dayId: day.id },
         orderBy: { time: 'desc' },
         include: {
@@ -65,14 +65,14 @@ export async function addOfficeSale(raw: z.infer<typeof OfficeSaleSchema>) {
 
         // Transaction to ensure atomic create
         await prisma.$transaction(async (tx) => {
-            const sale = await tx.purewaterOfficeSale.create({
+            const sale = await tx.koolJooOfficeSale.create({
                 data: {
                     dayId: day.id,
                     time: data.time || new Date(),
                     customerName: data.customerName,
                     bags: data.bags,
-                    pricePerBag: pricePerBag,
-                    amountNaira: amount,
+                    pricePerBag: data.pricePerBag,
+                    amountNaira: data.bags * data.pricePerBag,
                     paymentType: data.paymentType,
                     gatePassNumber: data.gatePass,
                     notes: data.notes

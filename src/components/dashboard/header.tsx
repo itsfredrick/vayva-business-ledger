@@ -26,12 +26,12 @@ export async function Header() {
                     {/* Accessibility for Sheet */}
                     <SheetTitle>Navigation Menu</SheetTitle>
                     <SheetDescription>
-                        Main navigation for Vayva Business Ledger.
+                        Main navigation for Kool Joo Business Ledger.
                     </SheetDescription>
                     <nav className="grid gap-2 text-lg font-medium">
                         <Link href="/" className="flex items-center gap-2 text-lg font-semibold">
                             <Package2 className="h-6 w-6" />
-                            <span className="sr-only">Vayva</span>
+                            <span className="sr-only">Kool Joo</span>
                         </Link>
                         <NavLinks role={role} />
                     </nav>

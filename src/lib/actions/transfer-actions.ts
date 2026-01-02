@@ -24,7 +24,7 @@ export async function getPendingTransfers() {
         include: {
             day: { select: { date: true } },
             driverDay: { include: { driverProfile: true } },
-            officeSale: { select: { customerName: true } },
+            officeSale: true,
             dispenserDelivery: { include: { customer: true } }
         }
     });

@@ -107,7 +107,7 @@ model User {
 
 model CompanySettings {
   id             String   @id @default(cuid())
-  name           String   @default("PureWater Company")
+  name           String   @default("Kool Joo")
   logoUrl        String?
   primaryColor   String?
   workdays       String?  // "Mon-Sat"
@@ -164,7 +164,7 @@ model DayRecord {
 
   // Relations
   driverDays       DriverDay[]
-  kitchenSales     PurewaterOfficeSale[]
+  officeSales     KoolJooOfficeSale[]
   dispenserDeliveries DispenserDelivery[]
   expenses         Expense[]
   cashLedger       CashLedger?
@@ -254,7 +254,7 @@ model TransferLog {
   driverDay   DriverDay? @relation(fields: [driverDayId], references: [id])
   
   officeSaleId String?
-  officeSale   PurewaterOfficeSale? @relation(fields: [officeSaleId], references: [id])
+  officeSale   KoolJooOfficeSale? @relation(fields: [officeSaleId], references: [id])
   
   dispenserDeliveryId String?
   dispenserDelivery   DispenserDelivery? @relation(fields: [dispenserDeliveryId], references: [id])
@@ -308,7 +308,7 @@ model StatementRow {
   transfers         TransferLog[]
 }
 
-model PurewaterOfficeSale {
+model KoolJooOfficeSale {
   id          String   @id @default(cuid())
   dayId       String
   day         DayRecord @relation(fields: [dayId], references: [id])

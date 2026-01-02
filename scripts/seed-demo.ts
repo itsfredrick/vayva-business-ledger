@@ -19,7 +19,7 @@ async function main() {
     await prisma.dispenserDelivery.deleteMany();
     await prisma.supplierDelivery.deleteMany();
     await prisma.trip.deleteMany();
-    await prisma.purewaterOfficeSale.deleteMany();
+    await prisma.koolJooOfficeSale.deleteMany();
     await prisma.driverDay.deleteMany();
     await prisma.expense.deleteMany();
     await prisma.cashLedger.deleteMany();
@@ -266,7 +266,7 @@ async function main() {
     });
 
     // Office Sales
-    await prisma.purewaterOfficeSale.create({
+    await prisma.koolJooOfficeSale.create({
         data: {
             dayId: dayRecord.id,
             customerName: "Walk-in Customer",
@@ -277,7 +277,7 @@ async function main() {
             time: new Date(new Date().setHours(10, 0))
         }
     });
-    const sale2 = await prisma.purewaterOfficeSale.create({
+    const sale2 = await prisma.koolJooOfficeSale.create({
         data: {
             dayId: dayRecord.id,
             customerName: "Mrs. Johnson (Events)",

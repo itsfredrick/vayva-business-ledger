@@ -1,4 +1,4 @@
-# Vayva Business Ledger
+# Kool Joo Business Ledger
 
 A comprehensive business management system for water factories, built with Next.js, Prisma, and TailwindCSS.
 

@@ -36,7 +36,7 @@ export default async function TodayPage() {
             },
             orderBy: { driverProfile: { name: 'asc' } }
         }),
-        prisma.purewaterOfficeSale.findMany({
+        prisma.koolJooOfficeSale.findMany({
             where: { dayId: day.id },
             orderBy: { time: 'desc' }
         }),

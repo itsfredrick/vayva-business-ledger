@@ -25,6 +25,7 @@ async function main() {
     })
 
     // Create Bank Account
+    await prisma.koolJooOfficeSale.deleteMany();
     await prisma.bankAccount.createMany({
         data: [
             { label: 'Primary Bank', accountNumber: '1234567890', bankName: 'GTBank', isActive: true }

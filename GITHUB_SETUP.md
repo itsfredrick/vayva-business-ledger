@@ -1,6 +1,6 @@
 # GitHub Repository Setup Checklist
 
-Follow these steps to properly set up your GitHub repository for **Vayva Business Ledger**.
+Follow these steps to properly set up your GitHub repository for **Kool Joo Business Ledger**.
 
 ## 1. Create the Repository on GitHub
 - **[ ] Go to GitHub**: Visit [github.com/new](https://github.com/new).
@@ -27,7 +27,7 @@ git branch -M main
 git add .
 
 # Make the initial commit
-git commit -m "Initial commit: Vayva Business Ledger base"
+git commit -m "Initial commit: Kool Joo Business Ledger base"
 
 # Push to GitHub
 git push -u origin main

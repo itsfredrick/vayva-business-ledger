@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Vayva Business Ledger",
+  title: "Kool Joo Business Ledger",
   description: "Smart ledger for water factory operations",
 };
 
