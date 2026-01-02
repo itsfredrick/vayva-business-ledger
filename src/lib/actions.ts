@@ -18,11 +18,13 @@ export async function authenticate(
         if (error instanceof AuthError) {
             switch (error.type) {
                 case "CredentialsSignin":
-                    return "Invalid credentials.";
+                    return "Invalid username or password.";
                 default:
-                    return "Something went wrong.";
+                    console.error("Auth Error:", error.type, error);
+                    return "Authentication failed. Please try again.";
             }
         }
+        console.error("Unexpected Auth Error:", error);
         throw error;
     }
 }
