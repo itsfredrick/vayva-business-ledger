@@ -22,7 +22,7 @@ export async function getInventoryDay() {
     const outgoingDriverParams = trips._sum.loadedBags || 0;
 
     // 2. Get Outgoing Office Sales (Sum bags)
-    const sales = await prisma.purewaterOfficeSale.aggregate({
+    const sales = await prisma.koolJooOfficeSale.aggregate({
         where: { dayId: day.id },
         _sum: { bags: true }
     });

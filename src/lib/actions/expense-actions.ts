@@ -86,7 +86,7 @@ export async function getPettyCashStats() {
     const cashFromDrivers = driverReceived._sum.cashReceivedNaira || 0;
 
     // b. Office Sales (CASH only)
-    const officeSales = await prisma.purewaterOfficeSale.aggregate({
+    const officeSales = await prisma.koolJooOfficeSale.aggregate({
         where: { dayId: day.id, paymentType: "CASH" },
         _sum: { amountNaira: true }
     });
@@ -177,7 +177,7 @@ export async function submitClosingCash(amount: number) {
 
     // 2. In
     const driverReceived = await prisma.driverDay.aggregate({ where: { dayId: day.id }, _sum: { cashReceivedNaira: true } });
-    const officeSales = await prisma.purewaterOfficeSale.aggregate({ where: { dayId: day.id, paymentType: "CASH" }, _sum: { amountNaira: true } });
+    const officeSales = await prisma.koolJooOfficeSale.aggregate({ where: { dayId: day.id, paymentType: "CASH" }, _sum: { amountNaira: true } });
 
     const startOfDay = new Date(day.date); startOfDay.setHours(0, 0, 0, 0);
     const endOfDay = new Date(day.date); endOfDay.setHours(23, 59, 59, 999);

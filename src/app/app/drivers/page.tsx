@@ -62,7 +62,7 @@ export default async function DriversPage(props: { searchParams: Promise<{ date?
             },
             orderBy: { driverProfile: { name: 'asc' } }
         }),
-        prisma.purewaterOfficeSale.findMany({
+        prisma.koolJooOfficeSale.findMany({
             where: { dayId: day.id },
             orderBy: { time: 'desc' }
         }),

@@ -1,7 +1,7 @@
 
 "use client";
 
-import { DayRecord, DriverDay, Trip, SupplierDelivery, TransferLog, DriverProfile, PurewaterOfficeSale, Expense } from "@prisma/client";
+import { DayRecord, DriverDay, Trip, SupplierDelivery, TransferLog, DriverProfile, KoolJooOfficeSale, Expense } from "@prisma/client";
 import { DailyBook } from "@/components/today/daily-book";
 import { StickySummary } from "@/components/today/sticky-summary";
 import { updateDriverDay } from "@/lib/actions/driver-detail-actions";
@@ -22,7 +22,7 @@ type ExtendedDriverDay = DriverDay & {
 interface TodayClientProps {
     day: DayRecord;
     drivers: ExtendedDriverDay[];
-    officeSales: PurewaterOfficeSale[];
+    officeSales: KoolJooOfficeSale[];
     expenses: Expense[];
     isEditable: boolean;
     allDriverProfiles: DriverProfile[];

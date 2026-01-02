@@ -16,7 +16,7 @@ export interface SerializedMutation {
     retryCount: number;
 }
 
-const db = new Dexie('PureWaterDB') as Dexie & {
+const db = new Dexie('KoolJooDB') as Dexie & {
     offlineQueue: EntityTable<SerializedMutation, 'id'>;
     drafts: EntityTable<{ id: string; type: string; data: any; updatedAt: number }, 'id'>;
 };

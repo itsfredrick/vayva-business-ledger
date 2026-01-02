@@ -71,8 +71,8 @@ export async function addOfficeSale(raw: z.infer<typeof OfficeSaleSchema>) {
                     time: data.time || new Date(),
                     customerName: data.customerName,
                     bags: data.bags,
-                    pricePerBag: data.pricePerBag,
-                    amountNaira: data.bags * data.pricePerBag,
+                    pricePerBag: pricePerBag,
+                    amountNaira: data.bags * pricePerBag,
                     paymentType: data.paymentType,
                     gatePassNumber: data.gatePass,
                     notes: data.notes

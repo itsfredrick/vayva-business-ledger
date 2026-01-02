@@ -50,7 +50,7 @@ export function DashboardAlerts({ alerts }: { alerts: Alert[] }) {
 // ---
 
 type StatsData = {
-    pureWater: { bagsSold: number; revenueExpected: number; cashReceived: number; outstanding: number; };
+    koolJoo: { bagsSold: number; revenueExpected: number; cashReceived: number; outstanding: number; };
     dispenser: { bottlesDelivered: number; revenue: number; billed: number; totalOwingBottles: number; };
     expenses: { total: number; };
 };
@@ -62,21 +62,21 @@ export function DashboardStats({ stats }: { stats: StatsData }) {
             <div className="space-y-4">
                 <div className="flex items-center justify-between border-b pb-2">
                     <h3 className="font-bold text-sm tracking-tight flex items-center gap-2">
-                        <ShoppingBag className="w-4 h-4 text-blue-500" /> Pure Water Volume & Cash
+                        <ShoppingBag className="w-4 h-4 text-blue-500" /> Kool Joo Volume & Cash
                     </h3>
-                    <Badge variant="outline" className="font-mono">{stats.pureWater.bagsSold.toLocaleString()} Bags Sold</Badge>
+                    <Badge variant="outline" className="font-mono">{stats.koolJoo.bagsSold.toLocaleString()} Bags Sold</Badge>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     <StatCard
                         title="Revenue Expected"
-                        value={stats.pureWater.revenueExpected}
+                        value={stats.koolJoo.revenueExpected}
                         isCurrency
                         subtitle="Total value of bags sold"
                     />
                     <StatCard
                         title="Cash Received"
-                        value={stats.pureWater.cashReceived}
+                        value={stats.koolJoo.cashReceived}
                         isCurrency
                         trend="UP"
                         valueColor="text-green-600 dark:text-green-400"
@@ -84,10 +84,10 @@ export function DashboardStats({ stats }: { stats: StatsData }) {
                     />
                     <StatCard
                         title="Outstanding"
-                        value={stats.pureWater.outstanding}
+                        value={stats.koolJoo.outstanding}
                         isCurrency
-                        trend={stats.pureWater.outstanding > 0 ? "DOWN" : "UP"}
-                        valueColor={stats.pureWater.outstanding > 10000 ? "text-red-600 dark:text-red-400" : ""}
+                        trend={stats.koolJoo.outstanding > 0 ? "DOWN" : "UP"}
+                        valueColor={stats.koolJoo.outstanding > 10000 ? "text-red-600 dark:text-red-400" : ""}
                         subtitle="Total collection pending"
                     />
                 </div>
@@ -96,12 +96,12 @@ export function DashboardStats({ stats }: { stats: StatsData }) {
                 <div className="p-4 rounded-xl border bg-muted/10">
                     <div className="flex justify-between text-xs font-medium mb-2">
                         <span>Collection Progress</span>
-                        <span>{Math.round((stats.pureWater.cashReceived / stats.pureWater.revenueExpected) * 100) || 0}%</span>
+                        <span>{Math.round((stats.koolJoo.cashReceived / stats.koolJoo.revenueExpected) * 100) || 0}%</span>
                     </div>
                     <div className="h-2 w-full bg-muted rounded-full overflow-hidden">
                         <div
                             className="h-full bg-green-500 rounded-full transition-all duration-1000"
-                            style={{ width: `${Math.min(100, (stats.pureWater.cashReceived / stats.pureWater.revenueExpected) * 100)}%` }}
+                            style={{ width: `${Math.min(100, (stats.koolJoo.cashReceived / stats.koolJoo.revenueExpected) * 100)}%` }}
                         />
                     </div>
                 </div>

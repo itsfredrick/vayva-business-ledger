@@ -84,7 +84,7 @@ export async function getDashboardStats(range: DashboardRange) {
     });
 
     return {
-        pureWater: {
+        koolJoo: {
             bagsSold: (driverStats._sum.totalSoldBags || 0) + (officeStats._sum.bags || 0),
             revenueExpected: (driverStats._sum.expectedNaira || 0) + (officeStats._sum.amountNaira || 0), // Office sales expected = amount
             cashReceived: (driverStats._sum.cashReceivedNaira || 0) + (officeStats._sum.amountNaira || 0), // Assuming office is paid
