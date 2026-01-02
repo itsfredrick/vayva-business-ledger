@@ -62,16 +62,16 @@ export default function LandingPage() {
               <div className="relative flex items-center justify-center lg:justify-end">
                 <div className="relative w-full max-w-[500px] aspect-square">
                   <Image
-                    src="/_art/kooljoo_dispenser_bottle_hero_1767357890745.png"
-                    alt="Kool Joo 19L Dispenser Bottle"
+                    src="/_art/official_dispenser_seal.jpg"
+                    alt="Kool Joo 19L Dispenser Official Seal"
                     fill
-                    className="object-contain drop-shadow-2xl brightness-105"
+                    className="object-contain drop-shadow-2xl"
                     priority
                   />
                   <div className="absolute top-4 right-4 bg-white/90 backdrop-blur p-3 rounded-2xl border shadow-lg flex flex-col items-center gap-1 scale-90 sm:scale-100">
                     <ShieldCheck className="w-8 h-8 text-green-600" />
                     <span className="text-[10px] font-bold text-blue-950 uppercase tracking-widest">NAFDAC</span>
-                    <span className="text-[8px] font-bold text-green-700">APPROVED</span>
+                    <span className="text-[8px] font-bold text-green-700">A1-8891</span>
                   </div>
                 </div>
               </div>
@@ -251,7 +251,7 @@ export default function LandingPage() {
               <h4 className="font-bold mb-4">Regulatory</h4>
               <div className="inline-flex flex-col border border-white/20 rounded-xl p-3 bg-white/5">
                 <span className="text-[10px] font-bold text-blue-400 tracking-widest uppercase">Certified Factory</span>
-                <span className="text-xs font-bold">NAFDAC No: NY-12345-A</span>
+                <span className="text-xs font-bold">NAFDAC No: A1-8891</span>
               </div>
             </div>
           </div>
