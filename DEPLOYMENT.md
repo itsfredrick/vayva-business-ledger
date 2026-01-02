@@ -29,18 +29,27 @@ git push -u origin main
 
 **SQLite is not supported on Vercel** for persistent data because Vercel's filesystem is ephemeral (it resets frequently). You must use a hosted database.
 
-### Recommendation: Neon (Postgres)
-1. Sign up for [Neon.tech](https://neon.tech/).
-2. Create a new project and copy your **Connection String**.
-3. **Update `prisma/schema.prisma`**:
-   Change the datasource provider from `sqlite` to `postgresql`:
+### Recommendation: Vercel Postgres (Powered by Neon)
+The easiest way is to use the **Storage** tab in your Vercel Dashboard:
+1. Go to your project in Vercel.
+2. Click the **Storage** tab.
+3. Select **CREATE DATABASE** -> **Postgres**.
+4. This will automatically add the `DATABASE_URL` and other secrets to your Environment Variables.
 
-   ```prisma
-   datasource db {
-     provider = "postgresql" // Changed from sqlite
-     url      = env("DATABASE_URL")
-   }
-   ```
+**IMPORTANT: Pre-Deployment Code Change**
+You must change your database provider in `prisma/schema.prisma` before pushing to GitHub:
+
+```prisma
+datasource db {
+  provider = "postgresql" // Changed from sqlite
+  url      = env("DATABASE_URL")
+}
+```
+
+### Optional: Vercel Blob (For Images/Files)
+If you plan to allow users to upload receipts or profile photos:
+1. In the same **Storage** tab, select **CREATE DATABASE** -> **Blob**.
+2. This creates a high-performance cloud storage bucket for your files.
 
 ---
 
@@ -51,13 +60,13 @@ git push -u origin main
    - **Framework Preset**: Next.js
    - **Root Directory**: `./`
 3. **Add Environment Variables**:
-   Add these in the Vercel dashboard:
+   If you didn't use the automatic storage setup, add these manually:
 
 | Variable | Description | Value Example |
 | :--- | :--- | :--- |
-| `DATABASE_URL` | Your Postgres connection string | `postgres://user:pass@ep-host.region.aws.neon.tech/neondb?sslmode=require` |
-| `AUTH_SECRET` | A long random string for security | Run `openssl rand -base64 32` to generate one |
-| `NEXTAUTH_URL` | Your production URL | `https://your-app-name.vercel.app` |
+| `DATABASE_URL` | Your Postgres connection string | `postgres://user:pass@ep-host.region.neon.tech/neondb` |
+| `AUTH_SECRET` | Secret key for Auth.js | Run `openssl rand -base64 32` locally |
+| `AUTH_URL` | Your production URL | `https://kooljoo-water.vercel.app` |
 
 4. **Deploy**: Click "Deploy". Vercel will automatically run `npm run build` and `prisma generate`.
 
