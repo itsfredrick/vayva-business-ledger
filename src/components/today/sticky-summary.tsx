@@ -56,20 +56,20 @@ export function StickySummary({
         <div className="sticky top-20 space-y-4">
 
             {/* Main Summary Card */}
-            <Card className="shadow-md border-t-4 border-t-primary">
+            <Card className="shadow-md border-t-4 border-t-blue-600">
                 <CardHeader className="pb-2">
                     <CardTitle className="text-lg">Day Summary</CardTitle>
                     <CardDescription>Real-time totals</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
 
-                    {/* Pure Water Block */}
+                    {/* Pure Water (Sachet) Block */}
                     <div className="space-y-1">
-                        <div className="flex items-center gap-2 text-sm font-semibold text-muted-foreground">
-                            <Package className="h-4 w-4" /> Pure Water
+                        <div className="flex items-center gap-2 text-sm font-semibold text-blue-900">
+                            <Package className="h-4 w-4 text-blue-500" /> Pure Water (Sachet)
                         </div>
                         <div className="flex justify-between text-sm">
-                            <span>Sold:</span>
+                            <span>Bags Sold:</span>
                             <span className="font-bold">{pwBags}</span>
                         </div>
                         <div className="flex justify-between text-sm">
@@ -80,10 +80,10 @@ export function StickySummary({
 
                     <Separator />
 
-                    {/* Dispenser & Office Block */}
+                    {/* Dispenser Water & Office Block */}
                     <div className="space-y-1">
-                        <div className="flex items-center gap-2 text-sm font-semibold text-muted-foreground">
-                            <Droplets className="h-4 w-4" /> Dispenser
+                        <div className="flex items-center gap-2 text-sm font-semibold text-blue-900">
+                            <Droplets className="h-4 w-4 text-blue-500" /> Dispenser Water
                         </div>
                         <div className="flex justify-between text-sm">
                             <span>Bottles: {dispbottles}</span>
@@ -91,8 +91,8 @@ export function StickySummary({
                         </div>
                     </div>
                     <div className="space-y-1">
-                        <div className="flex items-center gap-2 text-sm font-semibold text-muted-foreground">
-                            <Building className="h-4 w-4" /> Office Sales
+                        <div className="flex items-center gap-2 text-sm font-semibold text-blue-900">
+                            <Building className="h-4 w-4 text-blue-500" /> Office Sales
                         </div>
                         <div className="flex justify-between text-sm">
                             <span>Bags: {officeBags}</span>

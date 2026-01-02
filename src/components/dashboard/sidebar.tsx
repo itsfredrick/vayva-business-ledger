@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Package2, Bell } from "lucide-react";
+import { Droplets, Bell } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { NavLinks } from "./nav-links";
 import { auth } from "@/auth";
@@ -11,12 +11,12 @@ export async function Sidebar() {
     const role = session?.user?.role || "STAFF";
 
     return (
-        <div className="hidden border-r bg-gray-100/40 lg:block dark:bg-gray-800/40">
+        <div className="hidden border-r bg-blue-50/30 lg:block dark:bg-gray-900/40">
             <div className="flex h-full max-h-screen flex-col gap-2">
-                <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
-                    <Link href="/" className="flex items-center gap-2 font-semibold">
-                        <Package2 className="h-6 w-6" />
-                        <span className="">Kool Joo</span>
+                <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6 bg-white dark:bg-transparent">
+                    <Link href="/" className="flex items-center gap-2 font-bold text-blue-900 dark:text-blue-100">
+                        <Droplets className="h-6 w-6 text-blue-500 fill-blue-500" />
+                        <span className="tracking-tight">Kool Joo <span className="text-blue-500">Water</span></span>
                     </Link>
                     <Button variant="outline" size="icon" className="ml-auto h-8 w-8">
                         <Bell className="h-4 w-4" />

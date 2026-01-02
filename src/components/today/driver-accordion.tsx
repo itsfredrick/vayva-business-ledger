@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Plus } from "lucide-react";
+import { clsx } from "clsx";
 
 // Extended type to include relations
 type ExtendedDriverDay = DriverDay & {
@@ -43,23 +44,22 @@ export function DriverAccordion({
     onAddTransfer
 }: DriverAccordionProps) {
     return (
-        <AccordionItem value={dd.id} className="border rounded-lg bg-card px-2 mb-2 shadow-sm">
-            <AccordionTrigger className="hover:no-underline px-2 py-3">
+        <AccordionItem value={dd.id} className="border-0 border-b border-blue-100 bg-transparent px-0 mb-0 rounded-none overflow-hidden">
+            <AccordionTrigger className="hover:no-underline px-4 py-5 hover:bg-blue-50/50 transition-colors">
                 <div className="flex w-full items-center justify-between pr-4">
-                    <div className="text-left">
+                    <div className="text-left pl-10 border-l-[3px] border-blue-500/50">
                         <div className="flex items-center gap-2">
-                            <span className="font-bold text-lg">{dd.driverProfile.name}</span>
+                            <span className="font-bold text-xl text-blue-950 tracking-tight">{dd.driverProfile.name}</span>
                             {dd.motorBoyName && (
-                                <span className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded-full">
-                                    w/ {dd.motorBoyName}
+                                <span className="text-[10px] font-bold text-blue-600 bg-blue-50 border border-blue-100 px-2 py-0.5 rounded-md uppercase tracking-wide">
+                                    Member: {dd.motorBoyName}
                                 </span>
                             )}
                         </div>
-                        <div className="text-xs text-muted-foreground mt-1 flex gap-3">
-                            <span>Outstanding Start: <span className="font-mono font-medium text-foreground"><Money amount={dd.outstandingStartNaira} /></span></span>
-                            {/* Outstanding End Preview */}
-                            <span className={dd.outstandingEndNaira > 0 ? "text-red-600 font-bold" : "text-green-600 font-bold"}>
-                                End: <Money amount={dd.outstandingEndNaira} />
+                        <div className="text-xs font-medium text-slate-500 mt-1 flex gap-4">
+                            <span className="flex items-center gap-1">Start: <span className="font-mono text-slate-900 bg-slate-100 px-1.5 rounded"><Money amount={dd.outstandingStartNaira} /></span></span>
+                            <span className={clsx("flex items-center gap-1 font-bold", dd.outstandingEndNaira > 0 ? "text-red-500" : "text-green-600")}>
+                                Closing: <Money amount={dd.outstandingEndNaira} />
                             </span>
                         </div>
                     </div>

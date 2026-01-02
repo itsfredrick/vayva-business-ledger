@@ -14,33 +14,55 @@ export function LoginForm() {
     const [errorMessage, formAction, isPending] = useActionState(authenticate, undefined);
 
     return (
-        <Card className="w-[350px]">
-            <CardHeader>
-                <CardTitle>Login</CardTitle>
-                <CardDescription>Enter your username below to login to Kool Joo Business Ledger.</CardDescription>
+        <Card className="w-full bg-white/95 backdrop-blur-xl border border-white/20 shadow-2xl rounded-3xl overflow-hidden">
+            <CardHeader className="space-y-1 pb-6 pt-8 text-center">
+                <CardTitle className="text-2xl font-black text-blue-950 tracking-tight">Welcome Back</CardTitle>
+                <CardDescription className="text-slate-500 font-medium text-sm">
+                    Enter your credentials to access the ledger.
+                </CardDescription>
             </CardHeader>
             <form action={formAction}>
                 <input type="hidden" name="redirectTo" value={callbackUrl} />
-                <CardContent>
-                    <div className="grid w-full items-center gap-4">
-                        <div className="flex flex-col space-y-1.5">
-                            <Label htmlFor="username">Username</Label>
-                            <Input id="username" name="username" type="text" placeholder="owner" required />
+                <CardContent className="space-y-5 px-8">
+                    <div className="space-y-4">
+                        <div className="space-y-2">
+                            <Label htmlFor="username" className="text-xs font-bold uppercase tracking-wider text-slate-400 pl-1">Username</Label>
+                            <Input
+                                id="username"
+                                name="username"
+                                type="text"
+                                placeholder="e.g. owner"
+                                required
+                                className="h-12 bg-slate-50 border-slate-200 focus:border-blue-500 rounded-xl px-4 font-medium"
+                            />
                         </div>
-                        <div className="flex flex-col space-y-1.5">
-                            <Label htmlFor="password">Password</Label>
-                            <Input id="password" name="password" type="password" required />
+                        <div className="space-y-2">
+                            <Label htmlFor="password" className="text-xs font-bold uppercase tracking-wider text-slate-400 pl-1">Password</Label>
+                            <Input
+                                id="password"
+                                name="password"
+                                type="password"
+                                required
+                                className="h-12 bg-slate-50 border-slate-200 focus:border-blue-500 rounded-xl px-4 font-medium"
+                            />
                         </div>
                     </div>
-                    <div className="flex h-8 items-end space-x-1" aria-live="polite" aria-atomic="true">
+                    <div className="flex h-6 items-center" aria-live="polite" aria-atomic="true">
                         {errorMessage && (
-                            <p className="text-sm text-red-500 font-medium">{errorMessage}</p>
+                            <p className="text-xs text-red-500 font-bold bg-red-50 px-3 py-1 rounded-full border border-red-100 flex items-center gap-1.5 animate-in fade-in slide-in-from-top-1">
+                                <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
+                                {errorMessage}
+                            </p>
                         )}
                     </div>
                 </CardContent>
-                <CardFooter className="flex justify-between">
-                    <Button disabled={isPending} type="submit" className="w-full">
-                        {isPending ? "Logging in..." : "Login"}
+                <CardFooter className="px-8 pb-8 pt-2">
+                    <Button
+                        disabled={isPending}
+                        type="submit"
+                        className="w-full h-12 bg-blue-900 hover:bg-black text-white rounded-xl font-bold text-lg shadow-xl shadow-blue-900/10 transition-all active:scale-95"
+                    >
+                        {isPending ? "Authenticating..." : "Enter System"}
                     </Button>
                 </CardFooter>
             </form>

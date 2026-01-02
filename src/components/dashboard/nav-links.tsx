@@ -41,9 +41,9 @@ const navItems: NavItem[] = [
     { name: "Drivers", href: "/app/drivers", icon: Truck, roles: ["STAFF"] },
     { name: "Drivers Review", href: "/app/drivers/review", icon: Truck, roles: ["OWNER"] },
 
-    { name: "Office Sales", href: "/app/sales", icon: ShoppingCart, roles: ["STAFF"] },
+    { name: "Pure Water Sales", href: "/app/sales", icon: ShoppingCart, roles: ["STAFF"] },
 
-    { name: "Dispenser", href: "/app/dispenser", icon: Droplets, roles: ["STAFF"] },
+    { name: "Dispenser Water", href: "/app/dispenser", icon: Droplets, roles: ["STAFF"] },
     { name: "Dispenser Billing", href: "/app/dispenser/billing", icon: Droplets, roles: ["OWNER"] },
 
     { name: "Expenses", href: "/app/expenses", icon: CreditCard, roles: ["STAFF"] },

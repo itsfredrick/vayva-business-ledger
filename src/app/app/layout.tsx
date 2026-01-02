@@ -12,7 +12,7 @@ export default function DashboardLayout({
             <Sidebar />
             <div className="flex flex-col">
                 <Header />
-                <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
+                <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6 bg-blue-50/20 dark:bg-zinc-950/50">
                     {children}
                 </main>
             </div>

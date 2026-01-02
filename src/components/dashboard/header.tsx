@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { CircleUser, Menu, Package2 } from "lucide-react";
+import { CircleUser, Menu, Droplets } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from "@/components/ui/sheet";
@@ -26,12 +26,12 @@ export async function Header() {
                     {/* Accessibility for Sheet */}
                     <SheetTitle>Navigation Menu</SheetTitle>
                     <SheetDescription>
-                        Main navigation for Kool Joo Business Ledger.
+                        Main navigation for Kool Joo Water — Business Ledger.
                     </SheetDescription>
                     <nav className="grid gap-2 text-lg font-medium">
-                        <Link href="/" className="flex items-center gap-2 text-lg font-semibold">
-                            <Package2 className="h-6 w-6" />
-                            <span className="sr-only">Kool Joo</span>
+                        <Link href="/" className="flex items-center gap-2 text-lg font-bold text-blue-900">
+                            <Droplets className="h-6 w-6 text-blue-500 fill-blue-500" />
+                            <span>Kool Joo <span className="text-blue-500">Water</span></span>
                         </Link>
                         <NavLinks role={role} />
                     </nav>

@@ -58,13 +58,13 @@ type StatsData = {
 export function DashboardStats({ stats }: { stats: StatsData }) {
     return (
         <div className="grid grid-cols-1 gap-10">
-            {/* Pure Water Section */}
+            {/* Pure Water (Sachet) Section */}
             <div className="space-y-4">
-                <div className="flex items-center justify-between border-b pb-2">
-                    <h3 className="font-bold text-sm tracking-tight flex items-center gap-2">
-                        <ShoppingBag className="w-4 h-4 text-blue-500" /> Kool Joo Volume & Cash
+                <div className="flex items-center justify-between border-b border-blue-100 pb-2">
+                    <h3 className="font-bold text-base tracking-tight flex items-center gap-2 text-blue-950">
+                        <ShoppingBag className="w-5 h-5 text-blue-600" /> Sachet Water (Pure Water)
                     </h3>
-                    <Badge variant="outline" className="font-mono">{stats.koolJoo.bagsSold.toLocaleString()} Bags Sold</Badge>
+                    <Badge variant="outline" className="font-mono bg-blue-50 text-blue-700 border-blue-100">{stats.koolJoo.bagsSold.toLocaleString()} Bags Sold</Badge>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -107,13 +107,13 @@ export function DashboardStats({ stats }: { stats: StatsData }) {
                 </div>
             </div>
 
-            {/* Dispenser Section */}
+            {/* Dispenser Water Section */}
             <div className="space-y-4">
-                <div className="flex items-center justify-between border-b pb-2">
-                    <h3 className="font-bold text-sm tracking-tight flex items-center gap-2">
-                        <Droplets className="w-4 h-4 text-cyan-500" /> Dispenser Operations
+                <div className="flex items-center justify-between border-b border-blue-100 pb-2">
+                    <h3 className="font-bold text-base tracking-tight flex items-center gap-2 text-blue-950">
+                        <Droplets className="w-5 h-5 text-blue-500" /> Dispenser Water (19L)
                     </h3>
-                    <Badge variant="outline" className="font-mono">{stats.dispenser.bottlesDelivered.toLocaleString()} Delivered</Badge>
+                    <Badge variant="outline" className="font-mono bg-blue-50 text-blue-700 border-blue-100">{stats.dispenser.bottlesDelivered.toLocaleString()} Delivered</Badge>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                     <StatCard title="Delivered Revenue" value={stats.dispenser.revenue} isCurrency />
@@ -167,7 +167,7 @@ function StatCard({
     subtitle?: string
 }) {
     return (
-        <Card className="border shadow-none hover:border-primary/20 transition-colors">
+        <Card className="border shadow-none hover:border-blue-300 transition-colors bg-white/50 backdrop-blur-sm">
             <CardHeader className="pb-1">
                 <CardTitle className="text-xs font-bold text-muted-foreground/70 uppercase tracking-widest flex justify-between items-center">
                     {title}

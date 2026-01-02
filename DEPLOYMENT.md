@@ -1,4 +1,4 @@
-# Deployment Guide: Kool Joo Business Ledger
+# Kool Joo Business Ledger - Deployment Guide
 
 This guide explains how to deploy **Kool Joo Business Ledger** to GitHub and Vercel.
 
