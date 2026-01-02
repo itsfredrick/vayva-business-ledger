@@ -3,7 +3,7 @@
 
 import { Trip } from "@prisma/client";
 import { format } from "date-fns";
-import { Plus } from "lucide-react";
+import { Plus, Clock, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
@@ -18,58 +18,70 @@ interface TripStripProps {
 
 export function TripStrip({ trips, onAddTrip, onEditTrip, isEditable }: TripStripProps) {
     return (
-        <div className="w-full space-y-4">
+        <div className="w-full space-y-5">
             <div className="flex items-center justify-between">
-                <h4 className="text-[10px] font-black text-blue-950 uppercase tracking-[0.2em] opacity-60">Trips Logistics</h4>
+                <div className="flex items-center gap-2">
+                    <h4 className="text-[10px] font-black text-blue-950 uppercase tracking-[0.2em] opacity-60">Logistics Sequences</h4>
+                    <span className="bg-blue-100 text-blue-700 text-[9px] font-bold px-1.5 py-0.5 rounded-md">{trips.length}</span>
+                </div>
                 {isEditable && (
-                    <Button variant="ghost" size="sm" onClick={onAddTrip} className="h-8 gap-2 text-[10px] font-black text-blue-600 uppercase tracking-widest hover:bg-blue-50 px-4 rounded-xl transition-all active:scale-95">
-                        <Plus className="h-4 w-4" /> New Sequence
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={onAddTrip}
+                        className="h-8 gap-2 text-[10px] font-black text-blue-700 uppercase tracking-widest border-blue-200 hover:bg-blue-50 hover:text-blue-800 rounded-xl transition-all"
+                    >
+                        <Plus className="h-3 w-3" /> New Sequence
                     </Button>
                 )}
             </div>
 
-            <ScrollArea className="w-full whitespace-nowrap">
-                <div className="flex w-max space-x-6 pb-6 pt-2 px-1">
+            <ScrollArea className="w-full whitespace-nowrap pb-4">
+                <div className="flex w-max space-x-5 px-1">
                     {trips.length === 0 ? (
-                        <div className="flex h-[140px] w-[280px] flex-col items-center justify-center rounded-[32px] border-2 border-dashed border-slate-100 bg-slate-50/50 text-slate-300">
-                            <Plus className="w-8 h-8 mb-2 opacity-50" />
-                            <span className="text-[10px] font-black uppercase tracking-widest">No Sequences Dispatched</span>
+                        <div className="flex h-[150px] w-[300px] flex-col items-center justify-center rounded-[24px] border border-dashed border-slate-200 bg-slate-50/50 text-slate-400">
+                            <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center mb-3">
+                                <Clock className="w-5 h-5 opacity-50" />
+                            </div>
+                            <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">No Sequences Logged</span>
+                            <span className="text-[9px] text-slate-400 mt-1">Dispense stock to initiate tracking</span>
                         </div>
                     ) : (
-                        trips.map((trip) => (
+                        trips.map((trip, idx) => (
                             <Card
                                 key={trip.id}
                                 className={cn(
-                                    "relative flex h-[140px] w-[220px] flex-col justify-between overflow-hidden p-6 transition-all border-0 ring-1 ring-slate-100 shadow-sm rounded-[32px] bg-white group hover:shadow-xl hover:ring-blue-100 hover:-translate-y-1",
-                                    isEditable ? "cursor-pointer" : ""
+                                    "relative flex h-[150px] w-[240px] flex-col justify-between overflow-hidden p-0 transition-all border-0 shadow-lg shadow-slate-200/50 rounded-[28px] bg-white group hover:-translate-y-1 hover:shadow-xl hover:shadow-blue-900/10",
+                                    isEditable ? "cursor-pointer active:scale-95" : ""
                                 )}
                                 onClick={() => isEditable && onEditTrip(trip)}
                             >
-                                <div className="absolute top-0 right-0 p-4">
-                                    <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
-                                </div>
-
-                                <div className="space-y-1">
-                                    <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest block mb-1">Pass #{trip.gatePassNumber}</span>
-                                    <span className="text-2xl font-black text-blue-950 tracking-tighter">
-                                        {trip.loadedBags} <span className="text-xs font-bold text-slate-400">Bags</span>
-                                    </span>
-                                </div>
-
-                                <div className="flex items-center gap-4 pt-4 border-t border-slate-50">
+                                {/* Header */}
+                                <div className="px-5 pt-5 pb-0 flex justify-between items-start">
                                     <div className="space-y-0.5">
-                                        <p className="text-[8px] font-black text-slate-300 uppercase tracking-widest">Out</p>
-                                        <p className="text-[10px] font-black text-blue-900 tabular-nums">
-                                            {trip.departTime ? format(trip.departTime, "h:mm a") : "--:--"}
-                                        </p>
+                                        <span className="text-[8px] font-black text-slate-400 uppercase tracking-widest">Sequence #{idx + 1}</span>
+                                        <div className="text-[10px] font-bold text-slate-600 bg-slate-100 px-2 py-0.5 rounded-md w-fit">
+                                            PASS: {trip.gatePassNumber || "N/A"}
+                                        </div>
                                     </div>
-                                    <div className="w-[1px] h-6 bg-slate-50" />
-                                    <div className="space-y-0.5 text-right flex-1">
-                                        <p className="text-[8px] font-black text-slate-300 uppercase tracking-widest">In</p>
-                                        <p className="text-[10px] font-black text-blue-900 tabular-nums">
-                                            {trip.returnTime ? format(trip.returnTime, "h:mm a") : "--:--"}
-                                        </p>
+                                    <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 font-bold text-xs ring-1 ring-blue-100">
+                                        {idx + 1}
                                     </div>
+                                </div>
+
+                                {/* Main Content */}
+                                <div className="px-5">
+                                    <div className="flex items-baseline gap-1">
+                                        <span className="text-3xl font-black text-blue-950 tracking-tighter">{trip.loadedBags}</span>
+                                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Bags</span>
+                                    </div>
+                                </div>
+
+                                {/* Footer Time */}
+                                <div className="bg-slate-50/80 border-t border-slate-100 p-3 px-5 flex items-center justify-between text-[10px] font-bold text-slate-600">
+                                    <span>{trip.departTime ? format(trip.departTime, "h:mm a") : "--:--"}</span>
+                                    <ArrowRight className="w-3 h-3 text-slate-300" />
+                                    <span>{trip.returnTime ? format(trip.returnTime, "h:mm a") : "--:--"}</span>
                                 </div>
                             </Card>
                         ))

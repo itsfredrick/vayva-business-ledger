@@ -57,101 +57,118 @@ type StatsData = {
 
 export function DashboardStats({ stats }: { stats: StatsData }) {
     return (
-        <div className="grid grid-cols-1 gap-10">
+        <div className="space-y-12">
             {/* Pure Water (Sachet) Section */}
-            <div className="space-y-4">
-                <div className="flex items-center justify-between border-b border-blue-100 pb-2">
-                    <h3 className="font-bold text-base tracking-tight flex items-center gap-2 text-blue-950">
-                        <ShoppingBag className="w-5 h-5 text-blue-600" /> Sachet Water (Pure Water)
-                    </h3>
-                    <Badge variant="outline" className="font-mono bg-blue-50 text-blue-700 border-blue-100">{stats.koolJoo.bagsSold.toLocaleString()} Bags Sold</Badge>
+            <div className="space-y-6">
+                <div className="flex items-center justify-between">
+                    <div className="space-y-1">
+                        <h3 className="font-black text-xl italic tracking-tighter text-blue-950 flex items-center gap-2">
+                            <span className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white shadow-md shadow-blue-900/10">
+                                <ShoppingBag className="w-4 h-4" />
+                            </span>
+                            Sachet Production
+                        </h3>
+                        <p className="text-[10px] uppercase tracking-widest text-slate-400 font-bold pl-10">Daily Operations & Liquidity</p>
+                    </div>
+                    <Badge variant="secondary" className="font-mono bg-blue-50 text-blue-700 tracking-widest text-xs px-3 py-1">{stats.koolJoo.bagsSold.toLocaleString()} BAGS</Badge>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     <StatCard
                         title="Revenue Expected"
                         value={stats.koolJoo.revenueExpected}
                         isCurrency
-                        subtitle="Total value of bags sold"
+                        subtitle="Projected Yield"
+                        icon={TrendingUp}
+                        iconColor="text-blue-400"
                     />
                     <StatCard
-                        title="Cash Received"
+                        title="Cash in Hand"
                         value={stats.koolJoo.cashReceived}
                         isCurrency
                         trend="UP"
-                        valueColor="text-green-600 dark:text-green-400"
-                        subtitle="Confirmed cash in hand"
+                        valueColor="text-emerald-600 dark:text-emerald-400"
+                        accentColor="bg-emerald-500"
+                        subtitle="Liquid Assets"
+                        icon={DollarSign}
+                        iconColor="text-emerald-500"
                     />
                     <StatCard
                         title="Outstanding"
                         value={stats.koolJoo.outstanding}
                         isCurrency
                         trend={stats.koolJoo.outstanding > 0 ? "DOWN" : "UP"}
-                        valueColor={stats.koolJoo.outstanding > 10000 ? "text-red-600 dark:text-red-400" : ""}
-                        subtitle="Total collection pending"
+                        valueColor={stats.koolJoo.outstanding > 10000 ? "text-red-600 dark:text-red-400" : "text-slate-600"}
+                        accentColor="bg-red-500"
+                        subtitle="Uncollected Debt"
+                        icon={AlertCircle}
+                        iconColor="text-red-500"
                     />
                 </div>
 
-                {/* Performance Visualizer (Simple CSS Bar) */}
-                <div className="p-4 rounded-xl border bg-muted/10">
-                    <div className="flex justify-between text-xs font-medium mb-2">
-                        <span>Collection Progress</span>
-                        <span>{Math.round((stats.koolJoo.cashReceived / stats.koolJoo.revenueExpected) * 100) || 0}%</span>
-                    </div>
-                    <div className="h-2 w-full bg-muted rounded-full overflow-hidden">
-                        <div
-                            className="h-full bg-green-500 rounded-full transition-all duration-1000"
-                            style={{ width: `${Math.min(100, (stats.koolJoo.cashReceived / stats.koolJoo.revenueExpected) * 100)}%` }}
-                        />
-                    </div>
+                {/* Progress Bar */}
+                <div className="relative h-3 w-full bg-slate-100 rounded-full overflow-hidden">
+                    <div
+                        className="h-full bg-gradient-to-r from-emerald-400 to-emerald-600 shadow-[0_0_20px_rgba(16,185,129,0.4)] transition-all duration-1000 ease-out"
+                        style={{ width: `${Math.min(100, (stats.koolJoo.cashReceived / stats.koolJoo.revenueExpected) * 100)}%` }}
+                    />
                 </div>
             </div>
 
             {/* Dispenser Water Section */}
-            <div className="space-y-4">
-                <div className="flex items-center justify-between border-b border-blue-100 pb-2">
-                    <h3 className="font-bold text-base tracking-tight flex items-center gap-2 text-blue-950">
-                        <Droplets className="w-5 h-5 text-blue-500" /> Dispenser Water (19L)
-                    </h3>
-                    <Badge variant="outline" className="font-mono bg-blue-50 text-blue-700 border-blue-100">{stats.dispenser.bottlesDelivered.toLocaleString()} Delivered</Badge>
+            <div className="space-y-6 pt-6 border-t border-slate-100">
+                <div className="flex items-center justify-between">
+                    <div className="space-y-1">
+                        <h3 className="font-black text-xl italic tracking-tighter text-blue-950 flex items-center gap-2">
+                            <span className="w-8 h-8 rounded-lg bg-cyan-500 flex items-center justify-center text-white shadow-md shadow-cyan-900/10">
+                                <Droplets className="w-4 h-4" />
+                            </span>
+                            Dispenser Logistics
+                        </h3>
+                        <p className="text-[10px] uppercase tracking-widest text-slate-400 font-bold pl-10">Corporate Supply Chain</p>
+                    </div>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <StatCard title="Delivered Revenue" value={stats.dispenser.revenue} isCurrency />
-                    <StatCard title="Monthly Invoiced" value={stats.dispenser.billed} isCurrency />
-                    <StatCard title="Bottles Owing" value={stats.dispenser.totalOwingBottles} />
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <StatCard title="Revenue Value" value={stats.dispenser.revenue} isCurrency subtitle="Delivery Value" />
+                    <StatCard title="Invoiced" value={stats.dispenser.billed} isCurrency subtitle="Billed to Client" />
+                    <StatCard title="Bottles Owing" value={stats.dispenser.totalOwingBottles} subtitle="Asset Deficit" icon={AlertCircle} iconColor="text-amber-500" />
+                    <StatCard title="Delivered" value={stats.dispenser.bottlesDelivered} subtitle="Volume Moved" icon={Truck} />
                 </div>
             </div>
 
             {/* Expenses Section */}
-            <div className="space-y-4">
-                <div className="flex items-center justify-between border-b border-red-50 pb-2">
-                    <h3 className="font-bold text-base tracking-tight flex items-center gap-2 text-slate-900">
-                        <DollarSign className="w-5 h-5 text-red-500" /> Operational Costs
-                    </h3>
-                </div>
-                <Card className="border-0 bg-red-50/20 shadow-none ring-1 ring-red-100 rounded-[32px] overflow-hidden">
-                    <CardContent className="p-8">
-                        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
-                            <div>
-                                <p className="text-[10px] font-black text-red-900/40 uppercase tracking-[0.2em] mb-1">Total Daily Expenses</p>
-                                <div className="text-5xl font-black tabular-nums tracking-tighter text-red-600">
+            <div className="space-y-6 pt-6 border-t border-slate-100">
+                <h3 className="font-black text-xl italic tracking-tighter text-red-950 flex items-center gap-2">
+                    <span className="w-8 h-8 rounded-lg bg-red-500 flex items-center justify-center text-white shadow-md shadow-red-900/10">
+                        <DollarSign className="w-4 h-4" />
+                    </span>
+                    Operational Overhead
+                </h3>
+                <Card className="border-none bg-gradient-to-br from-red-50/50 to-white shadow-lg shadow-red-900/5 ring-1 ring-red-100/50 rounded-[2rem] overflow-hidden relative">
+                    <div className="absolute top-0 right-0 p-32 bg-red-500/5 rounded-full blur-3xl pointer-events-none -mr-16 -mt-16" />
+                    <CardContent className="p-8 md:p-10 relative z-10">
+                        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-10">
+                            <div className="space-y-2">
+                                <p className="text-[11px] font-black text-red-400 uppercase tracking-[0.3em]">Total Daily Outflow</p>
+                                <div className="text-6xl font-black tabular-nums tracking-tighter text-red-600 drop-shadow-sm">
                                     <Money amount={stats.expenses.total} />
                                 </div>
                             </div>
-                            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                            <div className="flex flex-wrap gap-3 max-w-md">
                                 {[
                                     { label: "Salary", active: true },
                                     { label: "Diesel", active: true },
-                                    { label: "Repair", active: true },
-                                    { label: "Labels", active: false },
-                                    { label: "Others", active: false },
+                                    { label: "Maintenance", active: true },
+                                    { label: "Supplies", active: false },
                                 ].map((tag) => (
                                     <Badge
                                         key={tag.label}
                                         variant="outline"
                                         className={cn(
-                                            "px-4 py-1.5 rounded-xl border-none font-bold text-[10px] uppercase tracking-wider",
-                                            tag.active ? "bg-red-100 text-red-700" : "bg-white text-slate-400"
+                                            "px-5 py-2 rounded-xl border-none font-black text-[10px] uppercase tracking-wider transition-all",
+                                            tag.active
+                                                ? "bg-red-100 text-red-800 ring-1 ring-red-200"
+                                                : "bg-white text-slate-300 ring-1 ring-slate-100"
                                         )}
                                     >
                                         {tag.label}
@@ -172,35 +189,37 @@ function StatCard({
     isCurrency = false,
     trend = null,
     valueColor = "",
-    subtitle = ""
+    accentColor = "bg-blue-600",
+    subtitle = "",
+    icon: Icon,
+    iconColor = "text-slate-300"
 }: {
     title: string,
     value: number,
     isCurrency?: boolean,
     trend?: "UP" | "DOWN" | null,
     valueColor?: string,
-    subtitle?: string
+    accentColor?: string,
+    subtitle?: string,
+    icon?: any,
+    iconColor?: string
 }) {
     return (
-        <Card className="border-0 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-white ring-1 ring-slate-100 rounded-[24px] overflow-hidden">
-            <CardHeader className="pb-2 pt-6 px-6">
-                <CardTitle className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] flex justify-between items-center">
+        <Card className="border-none shadow-lg shadow-slate-200/40 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-white ring-1 ring-slate-100 rounded-[2rem] overflow-hidden group relative">
+            <CardHeader className="pb-2 pt-8 px-8 flex flex-row items-center justify-between space-y-0">
+                <CardTitle className="text-[11px] font-black text-slate-400 uppercase tracking-[0.2em]">
                     {title}
-                    <div className="p-1 rounded-full bg-slate-50">
-                        {trend === "UP" && <TrendingUp className="w-3.5 h-3.5 text-green-500" />}
-                        {trend === "DOWN" && <TrendingDown className="w-3.5 h-3.5 text-red-400" />}
-                        {!trend && <ArrowRight className="w-3.5 h-3.5 text-slate-300" />}
-                    </div>
                 </CardTitle>
+                {Icon && <Icon className={cn("w-5 h-5 opacity-50 group-hover:opacity-100 transition-opacity", iconColor)} />}
             </CardHeader>
-            <CardContent className="px-6 pb-6">
-                <div className={cn("text-3xl font-black tabular-nums tracking-tighter text-blue-950", valueColor)}>
+            <CardContent className="px-8 pb-8 space-y-1">
+                <div className={cn("text-4xl font-black tabular-nums tracking-tighter text-blue-950", valueColor)}>
                     {isCurrency ? <Money amount={value} /> : value.toLocaleString()}
                 </div>
-                {subtitle && <p className="text-[10px] text-slate-400 mt-2 font-bold uppercase tracking-tight italic opacity-70">{subtitle}</p>}
+                {subtitle && <p className="text-[10px] text-slate-400 font-bold uppercase tracking-tight italic opacity-60 group-hover:opacity-100 transition-opacity">{subtitle}</p>}
             </CardContent>
-            {/* Bottom Accent Decor */}
-            <div className="h-1.5 w-full bg-gradient-to-r from-blue-50 to-white opacity-50" />
+            {/* Hover Accent */}
+            <div className={cn("absolute bottom-0 left-0 w-full h-1 opacity-0 group-hover:opacity-100 transition-opacity", accentColor)} />
         </Card>
     );
 }
