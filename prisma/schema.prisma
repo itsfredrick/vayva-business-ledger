@@ -1,0 +1,526 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Role {
+  OWNER
+  STAFF
+}
+
+enum RateType {
+  SACHET_RETAIL
+  SACHET_SUPPLY
+  DRIVER_COMMISSION
+  MOTORBOY_COMMISSION
+  DISPENSER_DEFAULT
+}
+
+enum DayStatus {
+  OPEN
+  CLOSED
+}
+
+enum BillingMode {
+  PER_DELIVERY
+  MONTHLY
+}
+
+enum DeliveryStatus {
+  DELIVERED
+  NOT_DELIVERED
+  PART_DELIVERED
+}
+
+enum PaymentType {
+  CASH
+  TRANSFER
+  MONTHLY // For DispenserDelivery
+}
+
+enum PaymentMethod {
+  CASH
+  TRANSFER
+}
+
+enum InvoiceStatus {
+  DRAFT
+  ISSUED
+  PAID
+  PART_PAID
+}
+
+enum ExpenseStatus {
+  PENDING
+  APPROVED
+  QUERIED
+}
+
+enum TransferStatus {
+  PENDING
+  MATCHED_AUTO
+  MATCHED_MANUAL
+  NOT_FOUND
+}
+
+enum NotificationType {
+  LICENSE_EXPIRY
+  TRANSFER_UNMATCHED
+  DRIVER_SHORTFALL
+  INVENTORY_VARIANCE
+  DAY_UNLOCK_REQUEST
+}
+
+enum Severity {
+  INFO
+  WARNING
+  CRITICAL
+}
+
+model User {
+  id           String   @id @default(cuid())
+  name         String
+  username     String   @unique
+  email        String?  @unique
+  password     String   // passwordHash in prompt, mapping to password for NextAuth compat
+  role         Role     @default(STAFF)
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  
+  // Relations
+  openedDays      DayRecord[] @relation("OpenedBy")
+  closedDays      DayRecord[] @relation("ClosedBy")
+  uploadedStatements StatementUpload[]
+  generatedInvoices DispenserInvoice[]
+  recordedExpenses Expense[]
+  reviewedExpenses Expense[] @relation("ExpenseReviewer")
+  unlockRequests   DayRecord[] @relation("UnlockRequester")
+  auditLogs       AuditLog[]
+  acknowledgedNotifications Notification[]
+  rateChanges     RateHistory[]
+}
+
+model CompanySettings {
+  id             String   @id @default(cuid())
+  name           String   @default("PureWater Company")
+  logoUrl        String?
+  primaryColor   String?
+  workdays       String?  // "Mon-Sat"
+  
+  dayOpenTimeDefault  String?
+  dayCloseTimeDefault String?
+
+  // Current Rates
+  sachetRetailPrice   Int @default(350)
+  sachetSupplyPrice   Int @default(340)
+  driverCommissionPerBag Int @default(5)
+  motorBoyCommissionPerBag Int @default(3)
+  dispenserDefaultRatePerBottle Int @default(0)
+  
+  currency       String   @default("NGN")
+  
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model RateHistory {
+  id              String   @id @default(cuid())
+  rateType        RateType
+  oldValue        String
+  newValue        String
+  effectiveFrom   DateTime @default(now())
+  changedByUserId String
+  changedBy       User     @relation(fields: [changedByUserId], references: [id])
+  reason          String?
+}
+
+model DayRecord {
+  id        String    @id @default(cuid())
+  date      DateTime  @unique
+  status    DayStatus @default(OPEN)
+  
+  openedAt  DateTime  @default(now())
+  closedAt  DateTime?
+  
+  openedById String?
+  openedBy   User?   @relation("OpenedBy", fields: [openedById], references: [id])
+  
+  closedById String?
+  closedBy   User?   @relation("ClosedBy", fields: [closedById], references: [id])
+  
+  closedLockReason String?
+  ownerUnlockRequired Boolean @default(false)
+  
+  // Unlock Workflow
+  unlockRequestReason String?
+  unlockRequestedById String?
+  unlockRequestedBy   User?   @relation("UnlockRequester", fields: [unlockRequestedById], references: [id])
+  unlockWindowUntil   DateTime?
+
+  // Relations
+  driverDays       DriverDay[]
+  kitchenSales     PurewaterOfficeSale[]
+  dispenserDeliveries DispenserDelivery[]
+  expenses         Expense[]
+  cashLedger       CashLedger?
+  inventory        InventoryDay?
+  notifications    Notification[]
+  transfers        TransferLog[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model DriverProfile {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  isActive  Boolean  @default(true)
+  
+  driverDays DriverDay[]
+}
+
+model DriverDay {
+  id              String   @id @default(cuid())
+  dayId           String
+  day             DayRecord      @relation(fields: [dayId], references: [id])
+  driverProfileId String
+  driverProfile   DriverProfile  @relation(fields: [driverProfileId], references: [id])
+  
+  motorBoyName          String?
+  outstandingStartNaira Int     @default(0)
+  finalReturnBags       Int     @default(0)
+  cashReceivedNaira     Int     @default(0)
+  notes                 String?
+
+  // Computed Fields
+  totalTrips            Int     @default(0)
+  totalLoadedBags       Int     @default(0)
+  totalSoldBags         Int     @default(0)
+  supplierBags          Int     @default(0)
+  normalBags            Int     @default(0)
+  expectedNaira         Int     @default(0)
+  receivedLoggedNaira   Int     @default(0)
+  outstandingEndNaira   Int     @default(0)
+  driverCommissionNaira Int     @default(0)
+  motorBoyCommissionNaira Int   @default(0)
+  expensesNaira         Int     @default(0)
+  
+  driverCommissionRate  Int     @default(0)
+  motorBoyCommissionRate Int    @default(0)
+
+  // Relations
+  trips           Trip[]
+  supplierDeliveries SupplierDelivery[]
+  transferLogs    TransferLog[]
+  notifications   Notification[]
+}
+
+model Trip {
+  id             String   @id @default(cuid())
+  driverDayId    String
+  driverDay      DriverDay @relation(fields: [driverDayId], references: [id])
+  
+  gatePassNumber String? // Unique per day constraint to be enforced app logic or composite unique
+  departTime     DateTime?
+  returnTime     DateTime?
+  loadedBags     Int      @default(0)
+  notes          String?
+}
+
+model SupplierDelivery {
+  id          String   @id @default(cuid())
+  driverDayId String
+  driverDay   DriverDay @relation(fields: [driverDayId], references: [id])
+  
+  supplierName String
+  addressText  String?
+  bags         Int
+  pricePerBag  Int // Captured at entry time
+  amountNaira  Int // Computed
+}
+
+model TransferLog {
+  id        String   @id @default(cuid())
+  
+  dayId     String?
+  day       DayRecord? @relation(fields: [dayId], references: [id])
+  
+  driverDayId String?
+  driverDay   DriverDay? @relation(fields: [driverDayId], references: [id])
+  
+  officeSaleId String?
+  officeSale   PurewaterOfficeSale? @relation(fields: [officeSaleId], references: [id])
+  
+  dispenserDeliveryId String?
+  dispenserDelivery   DispenserDelivery? @relation(fields: [dispenserDeliveryId], references: [id])
+  
+  dispenserPaymentId String?
+  dispenserPayment   DispenserPayment? @relation(fields: [dispenserPaymentId], references: [id])
+
+  senderName       String
+  amountNaira      Int
+  claimedAt        DateTime @default(now())
+  bankAccountLabel String
+  proofImageUrl    String?
+  
+  status           TransferStatus @default(PENDING)
+  
+  matchedStatementRowId String?
+  matchedStatementRow   StatementRow? @relation(fields: [matchedStatementRowId], references: [id])
+}
+
+model BankAccount {
+  id            String   @id @default(cuid())
+  label         String
+  accountNumber String
+  bankName      String
+  isActive      Boolean  @default(true)
+}
+
+model StatementUpload {
+  id               String   @id @default(cuid())
+  uploadedByUserId String
+  uploadedByUser   User     @relation(fields: [uploadedByUserId], references: [id])
+  uploadedAt       DateTime @default(now())
+  
+  fromDate         DateTime
+  toDate           DateTime
+  fileUrl          String
+  
+  rows             StatementRow[]
+}
+
+model StatementRow {
+  id                String   @id @default(cuid())
+  statementUploadId String
+  statementUpload   StatementUpload @relation(fields: [statementUploadId], references: [id])
+  
+  postedAt          DateTime
+  senderName        String
+  amountNaira       Int
+  reference         String?
+  
+  transfers         TransferLog[]
+}
+
+model PurewaterOfficeSale {
+  id          String   @id @default(cuid())
+  dayId       String
+  day         DayRecord @relation(fields: [dayId], references: [id])
+  
+  time        DateTime @default(now())
+  customerName String
+  bags        Int
+  pricePerBag Int
+  amountNaira Int
+  
+  paymentType PaymentType
+  gatePassNumber String?
+  notes       String?
+  
+  transfers   TransferLog[]
+}
+
+model DispenserCustomer {
+  id               String   @id @default(cuid())
+  name             String
+  phone            String?
+  defaultAddress   String?
+  billingMode      BillingMode
+  defaultRatePerBottle Int
+  owingBottles     Int      @default(0)
+  isActive         Boolean  @default(true)
+  
+  deliveries       DispenserDelivery[]
+  invoices         DispenserInvoice[]
+  payments         DispenserPayment[]
+}
+
+model DispenserDelivery {
+  id              String   @id @default(cuid())
+  dayId           String
+  day             DayRecord @relation(fields: [dayId], references: [id])
+  
+  time            DateTime @default(now())
+  customerId      String
+  customer        DispenserCustomer @relation(fields: [customerId], references: [id])
+  
+  addressText     String?
+  bottlesDelivered Int
+  bottlesReturned Int      @default(0)
+  owingBottles    Int      @default(0) // Computed
+  
+  ratePerBottle   Int
+  amountExpectedNaira Int
+  
+  paymentType     PaymentType
+  deliveryStatus  DeliveryStatus
+  notes           String?
+  
+  invoiceLines    DispenserInvoiceLine[]
+  transfers       TransferLog[]
+}
+
+model DispenserInvoice {
+  id                String   @id @default(cuid())
+  customerId        String
+  customer          DispenserCustomer @relation(fields: [customerId], references: [id])
+  
+  invoiceMonth      String // YYYY-MM
+  status            InvoiceStatus @default(DRAFT)
+  
+  totalBottles      Int      @default(0)
+  totalAmountNaira  Int      @default(0)
+  
+  generatedAt       DateTime @default(now())
+  generatedByUserId String
+  generatedBy       User     @relation(fields: [generatedByUserId], references: [id])
+  
+  lines             DispenserInvoiceLine[]
+  payments          DispenserPayment[]
+}
+
+model DispenserInvoiceLine {
+  id               String   @id @default(cuid())
+  invoiceId        String
+  invoice          DispenserInvoice @relation(fields: [invoiceId], references: [id])
+  
+  deliveryId       String
+  delivery         DispenserDelivery @relation(fields: [deliveryId], references: [id])
+  
+  deliveryDate     DateTime
+  bottlesDelivered Int
+  ratePerBottle    Int
+  lineAmountNaira  Int
+}
+
+model DispenserPayment {
+  id                String   @id @default(cuid())
+  customerId        String
+  customer          DispenserCustomer @relation(fields: [customerId], references: [id])
+  
+  paidAt            DateTime @default(now())
+  amountNaira       Int
+  method            PaymentMethod
+  reference         String?
+  proofUrl          String?
+  
+  allocatedInvoiceId String?
+  allocatedInvoice   DispenserInvoice? @relation(fields: [allocatedInvoiceId], references: [id])
+  
+  transfers         TransferLog[]
+}
+
+model Expense {
+  id            String   @id @default(cuid())
+  dayId         String
+  day           DayRecord @relation(fields: [dayId], references: [id])
+  
+  time          DateTime @default(now())
+  whoTookMoney  String
+  category      String
+  amountNaira   Int
+  reason        String
+  receiptUrl    String?
+  
+  recordedByUserId String
+  recordedBy       User     @relation(fields: [recordedByUserId], references: [id])
+  
+  ownerReviewedStatus ExpenseStatus @default(PENDING)
+  ownerReviewNote     String?
+  ownerReviewedByUserId String?
+  ownerReviewedBy       User?    @relation("ExpenseReviewer", fields: [ownerReviewedByUserId], references: [id])
+  ownerReviewedAt       DateTime?
+}
+
+model CashLedger {
+  id                  String   @id @default(cuid())
+  dayId               String   @unique
+  day                 DayRecord @relation(fields: [dayId], references: [id])
+  
+  openingCashNaira    Int      @default(0)
+  cashReceivedNaira   Int      @default(0)
+  cashSpentNaira      Int      @default(0)
+  closingCashNaira    Int      @default(0) // Entered by staff
+  varianceNaira       Int      @default(0)
+}
+
+model InventoryDay {
+  id                       String   @id @default(cuid())
+  dayId                    String   @unique
+  day                      DayRecord @relation(fields: [dayId], references: [id])
+  
+  openingBags              Int      @default(0)
+  producedBags             Int      @default(0)
+  spoilageBags             Int      @default(0)
+  
+  outgoingDriverLoadsBags  Int      @default(0) // Computed
+  outgoingOfficeSalesBags  Int      @default(0) // Computed
+  
+  closingBagsComputed      Int      @default(0)
+  closingBagsConfirmed     Int?     // Nullable until closed
+  varianceBags             Int      @default(0)
+  
+  notes                    String?
+}
+
+model License {
+  id             String   @id @default(cuid())
+  name           String
+  licenseNumber  String
+  expiryDate     DateTime
+  documentUrl    String?
+  notes          String?
+  
+  notifications  Notification[]
+}
+
+model Notification {
+  id             String   @id @default(cuid())
+  type           NotificationType
+  severity       Severity
+  
+  dayId          String?
+  day            DayRecord? @relation(fields: [dayId], references: [id])
+  
+  driverDayId    String?
+  driverDay      DriverDay? @relation(fields: [driverDayId], references: [id])
+  
+  licenseId      String?
+  license        License?   @relation(fields: [licenseId], references: [id])
+  
+  message        String
+  createdAt      DateTime @default(now())
+  
+  acknowledgedByUserId String?
+  acknowledgedBy       User?   @relation(fields: [acknowledgedByUserId], references: [id])
+  acknowledgedAt       DateTime?
+}
+
+model AuditLog {
+  id          String   @id @default(cuid())
+  entityType  String
+  entityId    String?
+  action      String
+  oldJson     String?
+  newJson     String?
+  reason      String?
+  
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  
+  timestamp   DateTime @default(now())
+}
+
+model LoginAttempt {
+  id        String   @id @default(cuid())
+  username  String
+  ip        String?
+  success   Boolean
+  timestamp DateTime @default(now())
+}
