@@ -49,6 +49,20 @@ export function ExpenseTable({ expenses }: { expenses: Expense[] }) {
             cell: (e: Expense) => <span className="font-medium text-red-600">-{formatCurrency(e.amountNaira)}</span>
         },
         {
+            header: "Proof",
+            className: "text-center",
+            cell: (e: any) => e.receiptUrl ? (
+                <a
+                    href={e.receiptUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex h-8 px-3 items-center justify-center rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white transition-all text-[10px] font-black uppercase tracking-widest"
+                >
+                    Receipt
+                </a>
+            ) : <span className="text-[10px] font-bold text-slate-300 uppercase tracking-widest italic">Missing</span>
+        },
+        {
             header: "Status",
             className: "text-right w-[100px]",
             cell: (e: Expense) => {

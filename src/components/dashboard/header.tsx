@@ -14,27 +14,31 @@ export async function Header() {
     const role = session?.user?.role || "STAFF";
 
     return (
-        <header className="flex h-14 items-center gap-4 border-b bg-gray-100/40 px-4 lg:h-[60px] lg:px-6 dark:bg-gray-800/40">
+        <header className="flex h-16 items-center gap-4 border-b bg-white/80 backdrop-blur-md px-4 lg:h-20 lg:px-8 sticky top-0 z-30 justify-between md:justify-end">
             <Sheet>
                 <SheetTrigger asChild>
-                    <Button variant="outline" size="icon" className="shrink-0 lg:hidden">
-                        <Menu className="h-5 w-5" />
+                    <Button variant="outline" size="icon" className="shrink-0 md:hidden border-slate-200">
+                        <Menu className="h-5 w-5 text-blue-900" />
                         <span className="sr-only">Toggle navigation menu</span>
                     </Button>
                 </SheetTrigger>
-                <SheetContent side="left" className="flex flex-col">
-                    {/* Accessibility for Sheet */}
-                    <SheetTitle>Navigation Menu</SheetTitle>
-                    <SheetDescription>
-                        Main navigation for Kool Joo Water — Business Ledger.
-                    </SheetDescription>
-                    <nav className="grid gap-2 text-lg font-medium">
-                        <Link href="/" className="flex items-center gap-2 text-lg font-bold text-blue-900">
-                            <Droplets className="h-6 w-6 text-blue-500 fill-blue-500" />
-                            <span>Kool Joo <span className="text-blue-500">Water</span></span>
+                <SheetContent side="left" className="flex flex-col p-0 border-r-0">
+                    <div className="p-6 border-b border-slate-50">
+                        <Link href="/" className="flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center shadow-lg shadow-blue-600/20">
+                                <Droplets className="h-6 w-6 text-white fill-white" />
+                            </div>
+                            <div className="flex flex-col">
+                                <span className="text-blue-950 font-black text-lg tracking-tighter leading-tight uppercase">Kool Joo</span>
+                                <span className="text-blue-600 font-bold text-[8px] tracking-[0.3em] uppercase leading-none">Management</span>
+                            </div>
                         </Link>
-                        <NavLinks role={role} />
-                    </nav>
+                    </div>
+                    <div className="p-4 flex-1">
+                        <nav className="grid gap-1 font-bold">
+                            <NavLinks role={role} />
+                        </nav>
+                    </div>
                 </SheetContent>
             </Sheet>
             <div className="w-full flex-1">
@@ -59,4 +63,5 @@ export async function Header() {
             </DropdownMenu>
         </header>
     );
+}
 }

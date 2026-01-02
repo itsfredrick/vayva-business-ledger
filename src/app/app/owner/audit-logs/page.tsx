@@ -26,20 +26,22 @@ export default async function AuditLogsPage({
     ]);
 
     return (
-        <div className="p-6 max-w-7xl mx-auto space-y-6">
-            <div className="flex justify-between items-center">
-                <div>
-                    <h1 className="text-3xl font-bold tracking-tight">Audit Log Explorer</h1>
-                    <p className="text-muted-foreground">Monitor all critical actions and changes across the system.</p>
+        <div className="flex flex-col gap-10 p-6 md:p-12 max-w-[1600px] mx-auto pb-24">
+            <div className="flex flex-col md:flex-row justify-between md:items-end gap-6">
+                <div className="space-y-1">
+                    <h1 className="text-5xl font-black tracking-tighter text-blue-950 uppercase leading-none">System Sovereignty</h1>
+                    <p className="text-slate-400 font-bold uppercase tracking-[0.3em] text-[10px] pl-1">Historical Audit Trail & Critical Integrity Logs</p>
                 </div>
             </div>
 
-            <AuditLogsClient
-                initialLogs={logsData.logs}
-                total={logsData.total}
-                metadata={metadata}
-                filters={{ entityType, action, userId, page }}
-            />
+            <div className="pt-2">
+                <AuditLogsClient
+                    initialLogs={logsData.logs}
+                    total={logsData.total}
+                    metadata={metadata}
+                    filters={{ entityType, action, userId, page }}
+                />
+            </div>
         </div>
     );
 }

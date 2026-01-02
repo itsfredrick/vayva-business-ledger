@@ -18,41 +18,48 @@ export default async function DispenserPage() {
     const totalAmount = deliveries.reduce((acc, d) => acc + d.amountExpectedNaira, 0);
 
     return (
-        <div className="space-y-6 pb-20">
-            <div className="flex justify-between items-center bg-muted/30 p-4 rounded-lg border">
-                <div>
-                    <h1 className="text-2xl font-bold">Dispenser Delivery</h1>
-                    <p className="text-muted-foreground">Daily delivery ledger</p>
+        <div className="flex flex-col gap-10 p-6 md:p-12 max-w-[1600px] mx-auto pb-24">
+            <div className="flex flex-col md:flex-row justify-between md:items-end gap-6">
+                <div className="space-y-1">
+                    <h1 className="text-5xl font-black tracking-tighter text-blue-950 uppercase leading-none">Fleet Logistics</h1>
+                    <p className="text-slate-400 font-bold uppercase tracking-[0.3em] text-[10px] pl-1">Daily Dispenser Water Distributions</p>
                 </div>
-                <div className="flex gap-2">
+                <div className="flex flex-wrap gap-4">
                     <Link href="/app/dispenser/customers">
-                        <Button variant="outline">Manage Customers</Button>
+                        <Button variant="ghost" className="h-12 px-6 rounded-2xl font-black text-[10px] uppercase tracking-widest border-2 border-slate-100 hover:bg-slate-50 transition-all active:scale-95 shadow-sm bg-white">
+                            CRM Console
+                        </Button>
                     </Link>
                     <Link href="/app/dispenser/billing">
-                        <Button variant="outline">Billing & Invoices</Button>
+                        <Button variant="ghost" className="h-12 px-6 rounded-2xl font-black text-[10px] uppercase tracking-widest border-2 border-slate-100 hover:bg-slate-50 transition-all active:scale-95 shadow-sm bg-white">
+                            Financial Yields
+                        </Button>
                     </Link>
                     <AddDeliveryDialog customers={customers} isEditable={isEditable} />
                 </div>
             </div>
 
             {/* Summary Strip */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <Card className="p-4 bg-blue-50 dark:bg-blue-900/20 border-blue-100">
-                    <div className="text-xs text-muted-foreground uppercase font-bold">Delivered</div>
-                    <div className="text-2xl font-bold">{totalDelivered}</div>
-                </Card>
-                <Card className="p-4 bg-orange-50 dark:bg-orange-900/20 border-orange-100">
-                    <div className="text-xs text-muted-foreground uppercase font-bold">Returned</div>
-                    <div className="text-2xl font-bold">{totalReturned}</div>
-                </Card>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="p-8 rounded-[32px] bg-blue-50/50 ring-1 ring-blue-200 flex flex-col justify-between h-40">
+                    <p className="text-[10px] font-black text-blue-500 uppercase tracking-widest">Bottles Dispatched</p>
+                    <div className="text-4xl font-black text-blue-950 tracking-tighter">{totalDelivered} <span className="text-xs font-bold opacity-40 italic">Dispensed</span></div>
+                </div>
 
-                <Card className="p-4 bg-green-50 dark:bg-green-900/20 border-green-100">
-                    <div className="text-xs text-muted-foreground uppercase font-bold text-green-700">Total Value</div>
-                    <div className="text-2xl font-bold text-green-700">₦{totalAmount.toLocaleString()}</div>
-                </Card>
+                <div className="p-8 rounded-[32px] bg-orange-50/50 ring-1 ring-orange-200 flex flex-col justify-between h-40">
+                    <p className="text-[10px] font-black text-orange-600 uppercase tracking-widest">Returns Logged</p>
+                    <div className="text-4xl font-black text-orange-900 tracking-tighter">{totalReturned} <span className="text-xs font-bold opacity-40 italic">Empty</span></div>
+                </div>
+
+                <div className="p-8 rounded-[32px] bg-emerald-50/50 ring-1 ring-emerald-200 flex flex-col justify-between h-40">
+                    <p className="text-[10px] font-black text-emerald-600 uppercase tracking-widest">Settlement Value</p>
+                    <div className="text-4xl font-black text-emerald-900 tracking-tighter tabular-nums">₦{totalAmount.toLocaleString()}</div>
+                </div>
             </div>
 
-            <DeliveryTable deliveries={deliveries} />
+            <div className="pt-2">
+                <DeliveryTable deliveries={deliveries} />
+            </div>
         </div>
     );
 }

@@ -11,32 +11,40 @@ export async function Sidebar() {
     const role = session?.user?.role || "STAFF";
 
     return (
-        <div className="hidden border-r bg-blue-50/30 lg:block dark:bg-gray-900/40">
-            <div className="flex h-full max-h-screen flex-col gap-2">
-                <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6 bg-white dark:bg-transparent">
-                    <Link href="/" className="flex items-center gap-2 font-bold text-blue-900 dark:text-blue-100">
-                        <Droplets className="h-6 w-6 text-blue-500 fill-blue-500" />
-                        <span className="tracking-tight">Kool Joo <span className="text-blue-500">Water</span></span>
+        <div className="hidden border-r bg-white lg:block shadow-sm">
+            <div className="flex h-full max-h-screen flex-col gap-4">
+                <div className="flex h-20 items-center px-6 border-b border-slate-50">
+                    <Link href="/" className="flex items-center gap-3 transition-transform hover:scale-105">
+                        <div className="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center shadow-lg shadow-blue-600/20">
+                            <Droplets className="h-6 w-6 text-white fill-white" />
+                        </div>
+                        <div className="flex flex-col">
+                            <span className="text-blue-950 font-black text-lg tracking-tighter leading-tight uppercase">Kool Joo</span>
+                            <span className="text-blue-600 font-bold text-[8px] tracking-[0.3em] uppercase leading-none">Management</span>
+                        </div>
                     </Link>
-                    <Button variant="outline" size="icon" className="ml-auto h-8 w-8">
-                        <Bell className="h-4 w-4" />
-                        <span className="sr-only">Toggle notifications</span>
-                    </Button>
                 </div>
 
-                <DayStatusBadge />
-                <NetworkStatus />
+                <div className="px-4">
+                    <DayStatusBadge />
+                </div>
 
-                <div className="flex-1 overflow-y-auto">
-                    <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
+                <div className="flex-1 overflow-y-auto pt-2">
+                    <nav className="grid items-start px-2 lg:px-4 space-y-1">
                         <NavLinks role={role} />
                     </nav>
                 </div>
 
-                {/* User Info Footer in Sidebar */}
-                <div className="p-4 border-t mt-auto">
-                    <div className="text-sm font-medium">{session?.user?.name}</div>
-                    <div className="text-xs text-muted-foreground capitalize">{role.toLowerCase()}</div>
+                <div className="p-4 border-t border-slate-50 bg-slate-50/50">
+                    <div className="flex items-center gap-3 px-2">
+                        <div className="w-9 h-9 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 font-bold text-xs">
+                            {session?.user?.name?.[0]?.toUpperCase()}
+                        </div>
+                        <div className="flex flex-col overflow-hidden text-ellipsis">
+                            <div className="text-sm font-bold text-blue-950 truncate">{session?.user?.name}</div>
+                            <div className="text-[10px] font-black text-blue-500 uppercase tracking-widest">{role}</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -17,30 +17,30 @@ export default async function DashboardPage(props: { searchParams?: Promise<{ ra
     const alerts = await getSystemAlerts();
 
     return (
-        <div className="flex flex-col gap-8 p-4 md:p-8 max-w-[1600px] mx-auto pb-20">
-            <div className="flex flex-col md:flex-row justify-between md:items-center gap-4 border-b pb-6">
-                <div>
-                    <h1 className="text-4xl font-black tracking-tight underline decoration-primary/20 underline-offset-8">Dashboard</h1>
-                    <p className="text-muted-foreground mt-2 font-medium italic">Operational summary & system alerts.</p>
+        <div className="flex flex-col gap-10 p-6 md:p-12 max-w-[1600px] mx-auto pb-24">
+            <div className="flex flex-col md:flex-row justify-between md:items-end gap-6">
+                <div className="space-y-1">
+                    <h1 className="text-5xl font-black tracking-tighter text-blue-950 uppercase leading-none">Command Center</h1>
+                    <p className="text-slate-400 font-bold uppercase tracking-[0.3em] text-[10px] pl-1">Live Operational Intelligence</p>
                 </div>
-                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                <div className="flex flex-col sm:flex-row items-center gap-6">
                     {/* Range Toggle */}
-                    <div className="inline-flex h-10 items-center justify-center rounded-xl bg-muted/50 p-1 text-muted-foreground border shadow-inner">
-                        <Link href="/app/dashboard?range=TODAY" className={`inline-flex items-center justify-center whitespace-nowrap rounded-lg px-4 py-1.5 text-xs font-bold tracking-widest uppercase transition-all ${range === "TODAY" ? "bg-white dark:bg-zinc-900 text-foreground shadow-sm border" : "hover:text-primary"}`}>
+                    <div className="inline-flex h-12 items-center justify-center rounded-2xl bg-white p-1.5 text-slate-400 ring-1 ring-slate-200 shadow-sm">
+                        <Link href="/app/dashboard?range=TODAY" className={`inline-flex items-center justify-center whitespace-nowrap rounded-xl px-6 py-2 text-[10px] font-black tracking-widest uppercase transition-all ${range === "TODAY" ? "bg-blue-600 text-white shadow-lg shadow-blue-200" : "hover:text-blue-600 hover:bg-blue-50"}`}>
                             Today
                         </Link>
-                        <Link href="/app/dashboard?range=WEEK" className={`inline-flex items-center justify-center whitespace-nowrap rounded-lg px-4 py-1.5 text-xs font-bold tracking-widest uppercase transition-all ${range === "WEEK" ? "bg-white dark:bg-zinc-900 text-foreground shadow-sm border" : "hover:text-primary"}`}>
-                            Week
+                        <Link href="/app/dashboard?range=WEEK" className={`inline-flex items-center justify-center whitespace-nowrap rounded-xl px-6 py-2 text-[10px] font-black tracking-widest uppercase transition-all ${range === "WEEK" ? "bg-blue-600 text-white shadow-lg shadow-blue-200" : "hover:text-blue-600 hover:bg-blue-50"}`}>
+                            Weekly
                         </Link>
-                        <Link href="/app/dashboard?range=MONTH" className={`inline-flex items-center justify-center whitespace-nowrap rounded-lg px-4 py-1.5 text-xs font-bold tracking-widest uppercase transition-all ${range === "MONTH" ? "bg-white dark:bg-zinc-900 text-foreground shadow-sm border" : "hover:text-primary"}`}>
-                            Month
+                        <Link href="/app/dashboard?range=MONTH" className={`inline-flex items-center justify-center whitespace-nowrap rounded-xl px-6 py-2 text-[10px] font-black tracking-widest uppercase transition-all ${range === "MONTH" ? "bg-blue-600 text-white shadow-lg shadow-blue-200" : "hover:text-blue-600 hover:bg-blue-50"}`}>
+                            Monthly
                         </Link>
                     </div>
 
                     <Link href="/app/reports">
-                        <Button variant="outline" className="h-10 rounded-xl font-bold border-2 shadow-sm">
-                            <FileBarChart className="w-4 h-4 mr-2" />
-                            REPORTS
+                        <Button variant="ghost" className="h-12 px-6 rounded-2xl font-black text-[10px] uppercase tracking-widest border-2 border-slate-100 hover:bg-slate-50 transition-all active:scale-95 shadow-sm bg-white">
+                            <FileBarChart className="w-4 h-4 mr-2 text-blue-600" />
+                            View Analytics
                         </Button>
                     </Link>
                 </div>
@@ -58,19 +58,28 @@ export default async function DashboardPage(props: { searchParams?: Promise<{ ra
                         <DashboardAlerts alerts={alerts} />
 
                         {/* Quick Navigation / Help */}
-                        <div className="p-6 rounded-2xl bg-zinc-900 text-zinc-100 dark:bg-zinc-100 dark:text-zinc-900 shadow-xl relative overflow-hidden group">
-                            <div className="absolute top-0 right-0 p-2 opacity-10 group-hover:rotate-12 transition-transform">
-                                <Truck className="w-20 h-20" />
+                        <div className="p-8 rounded-[32px] bg-blue-950 text-white shadow-2xl relative overflow-hidden group">
+                            <div className="absolute -top-10 -right-10 opacity-20 group-hover:rotate-12 transition-all duration-500 scale-150">
+                                <Truck className="w-40 h-40 text-blue-400" />
                             </div>
-                            <h4 className="font-black text-xl italic mb-1">PRO TIPS</h4>
-                            <p className="text-zinc-400 dark:text-zinc-600 text-xs mb-4">Use Cmd+K to quickly search across all records.</p>
-                            <div className="space-y-2">
-                                <Link href="/app/drivers" className="flex items-center justify-between p-2 rounded bg-white/10 dark:bg-black/10 hover:bg-white/20 transition-colors text-sm font-bold">
-                                    Manage Drivers <ExternalLink className="w-3.5 h-3.5" />
-                                </Link>
-                                <Link href="/app/sales" className="flex items-center justify-between p-2 rounded bg-white/10 dark:bg-black/10 hover:bg-white/20 transition-colors text-sm font-bold">
-                                    Daily Sales <ExternalLink className="w-3.5 h-3.5" />
-                                </Link>
+                            <div className="relative z-10 space-y-6">
+                                <div>
+                                    <h4 className="font-black text-2xl tracking-tighter italic uppercase leading-tight">Elite Force<br />Operations</h4>
+                                    <p className="text-blue-300 text-[10px] font-bold uppercase tracking-widest mt-2">Systems Optimization</p>
+                                </div>
+                                <div className="space-y-3">
+                                    <Link href="/app/drivers" className="flex items-center justify-between p-4 rounded-2xl bg-white/5 hover:bg-white/10 transition-all text-[10px] font-black uppercase tracking-widest ring-1 ring-white/10 group/item">
+                                        Fleet Management
+                                        <ExternalLink className="w-3.5 h-3.5 group-hover/item:translate-x-1 transition-transform" />
+                                    </Link>
+                                    <Link href="/app/sales" className="flex items-center justify-between p-4 rounded-2xl bg-white/5 hover:bg-white/10 transition-all text-[10px] font-black uppercase tracking-widest ring-1 ring-white/10 group/item">
+                                        Revenue Streams
+                                        <ExternalLink className="w-3.5 h-3.5 group-hover/item:translate-x-1 transition-transform" />
+                                    </Link>
+                                </div>
+                                <div className="pt-2">
+                                    <p className="text-blue-400/60 text-[9px] font-black uppercase tracking-widest text-center italic">"Excellence in every drop"</p>
+                                </div>
                             </div>
                         </div>
                     </div>

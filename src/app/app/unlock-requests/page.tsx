@@ -28,32 +28,50 @@ export default async function UnlockRequestsPage() {
     });
 
     return (
-        <div className="flex flex-col gap-6">
-            <h1 className="text-2xl font-bold">Unlock Requests</h1>
+        <div className="flex flex-col gap-10 p-6 md:p-12 max-w-[1400px] mx-auto pb-24">
+            <div className="flex flex-col md:flex-row justify-between md:items-end gap-6">
+                <div className="space-y-1">
+                    <h1 className="text-5xl font-black tracking-tighter text-blue-950 uppercase leading-none">Access Governance</h1>
+                    <p className="text-slate-400 font-bold uppercase tracking-[0.3em] text-[10px] pl-1">Data Sovereignty & Ledger Integrity Overrides</p>
+                </div>
+            </div>
 
             {pendingRequests.length === 0 ? (
-                <p className="text-muted-foreground">No pending unlock requests.</p>
+                <div className="p-20 text-center bg-white rounded-[40px] border-2 border-dashed border-slate-100">
+                    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-300">No active signals found</p>
+                </div>
             ) : (
-                <div className="grid gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {pendingRequests.map((day) => (
-                        <Card key={day.id}>
-                            <CardHeader>
+                        <div key={day.id} className="bg-white rounded-[40px] p-8 ring-1 ring-slate-100 shadow-sm flex flex-col justify-between group hover:ring-blue-200 transition-all duration-500">
+                            <div className="space-y-6">
                                 <div className="flex justify-between items-start">
-                                    <CardTitle>Day: {day.date.toDateString()}</CardTitle>
-                                    <Badge variant="outline">Closed</Badge>
+                                    <div className="space-y-1">
+                                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Locked Period</p>
+                                        <h3 className="text-xl font-black text-blue-950 uppercase tracking-tight italic">{day.date.toDateString()}</h3>
+                                    </div>
+                                    <Badge variant="outline" className="h-6 rounded-lg px-2 font-black text-[10px] uppercase tracking-widest border-slate-200 text-slate-400">
+                                        SECURE_LOCK
+                                    </Badge>
                                 </div>
-                                <CardDescription>Requested by {day.unlockRequestedBy?.name}</CardDescription>
-                            </CardHeader>
-                            <CardContent>
-                                <p className="text-sm font-medium">Reason:</p>
-                                <p className="text-sm text-gray-600 dark:text-gray-300 bg-muted p-2 rounded mt-1">
-                                    "{day.unlockRequestReason}"
-                                </p>
-                            </CardContent>
-                            <CardFooter>
+
+                                <div className="space-y-2">
+                                    <p className="text-[10px] font-black text-blue-400 uppercase tracking-widest">Solicitor</p>
+                                    <p className="text-sm font-bold text-slate-900 group-hover:text-blue-600 transition-colors uppercase">{day.unlockRequestedBy?.name}</p>
+                                </div>
+
+                                <div className="space-y-2">
+                                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Justification</p>
+                                    <p className="text-xs font-bold text-slate-500 italic bg-slate-50 p-4 rounded-2xl leading-relaxed ring-1 ring-slate-100/50">
+                                        "{day.unlockRequestReason}"
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div className="mt-8">
                                 <ApproveUnlockButton dayId={day.id} />
-                            </CardFooter>
-                        </Card>
+                            </div>
+                        </div>
                     ))}
                 </div>
             )}

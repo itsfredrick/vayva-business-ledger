@@ -8,18 +8,20 @@ export default async function LicensesPage() {
     const licenses = await getLicenses();
 
     return (
-        <div className="space-y-6">
-            <div className="flex justify-between items-center">
-                <div>
-                    <h1 className="text-2xl font-bold">Licenses & Permits</h1>
-                    <p className="text-muted-foreground">Track government permits and expiration dates.</p>
+        <div className="flex flex-col gap-10 p-6 md:p-12 max-w-[1400px] mx-auto pb-24">
+            <div className="flex flex-col md:flex-row justify-between md:items-end gap-6">
+                <div className="space-y-1">
+                    <h1 className="text-5xl font-black tracking-tighter text-blue-950 uppercase leading-none">Regulatory Compliance</h1>
+                    <p className="text-slate-400 font-bold uppercase tracking-[0.3em] text-[10px] pl-1">Government Permits & Statutory Validity</p>
                 </div>
                 <div>
                     <AddLicenseDialog />
                 </div>
             </div>
 
-            <LicenseList licenses={licenses} />
+            <div className="pt-2">
+                <LicenseList licenses={licenses} />
+            </div>
         </div>
     );
 }

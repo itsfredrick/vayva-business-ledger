@@ -8,13 +8,17 @@ export default async function ExpensesReviewPage() {
     const pendingExpenses = await getExpensesForReview();
 
     return (
-        <div className="space-y-6">
-            <div>
-                <h1 className="text-2xl font-bold">Expense Review</h1>
-                <p className="text-muted-foreground">Approve or query staff expenses.</p>
+        <div className="flex flex-col gap-10 p-6 md:p-12 max-w-[1400px] mx-auto pb-24">
+            <div className="flex flex-col md:flex-row justify-between md:items-end gap-6">
+                <div className="space-y-1">
+                    <h1 className="text-5xl font-black tracking-tighter text-blue-950 uppercase leading-none">Governance Review</h1>
+                    <p className="text-slate-400 font-bold uppercase tracking-[0.3em] text-[10px] pl-1">Staff Expenditure Authorization & Auditing</p>
+                </div>
             </div>
 
-            <OwnerReviewTable expenses={pendingExpenses} />
+            <div className="pt-2">
+                <OwnerReviewTable expenses={pendingExpenses} />
+            </div>
         </div>
     );
 }

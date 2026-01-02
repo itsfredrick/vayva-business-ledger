@@ -11,15 +11,17 @@ import { format } from "date-fns";
 
 export default function ReportsPage() {
     return (
-        <div className="space-y-6">
-            <div>
-                <h1 className="text-2xl font-bold">Reports & Exports</h1>
-                <p className="text-muted-foreground">Download detailed data for external analysis.</p>
+        <div className="flex flex-col gap-10 p-6 md:p-12 max-w-[1400px] mx-auto pb-24">
+            <div className="flex flex-col md:flex-row justify-between md:items-end gap-6">
+                <div className="space-y-1">
+                    <h1 className="text-5xl font-black tracking-tighter text-blue-950 uppercase leading-none">Intelligence Archive</h1>
+                    <p className="text-slate-400 font-bold uppercase tracking-[0.3em] text-[10px] pl-1">Historical Export & Business Logic Extraction</p>
+                </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <ExportCard title="Sales Report" type="SALES" description="Includes Driver Daily totals and Office Sales records." />
-                <ExportCard title="Expenses Report" type="EXPENSES" description="Detailed list of all recorded expenses." />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-10 pt-4">
+                <ExportCard title="Revenue Stream Audit" type="SALES" description="Comprehensive CSV containing All Driver Movements and Direct Office Settlements." />
+                <ExportCard title="Operational Cost Ledger" type="EXPENSES" description="Detailed list of all approved factory expenses and petty cash movements." />
             </div>
         </div>
     );
@@ -82,29 +84,49 @@ function ExportCard({ title, type, description }: { title: string, type: "SALES"
     };
 
     return (
-        <Card>
-            <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                    <Download className="w-5 h-5" />
-                    {title}
-                </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-                <p className="text-sm text-muted-foreground">{description}</p>
-                <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                        <Label>From</Label>
-                        <Input type="date" value={from} onChange={e => setFrom(e.target.value)} />
+        <div className="bg-white rounded-[40px] p-10 ring-1 ring-slate-100 shadow-sm flex flex-col justify-between group hover:ring-blue-200 transition-all duration-500">
+            <div className="space-y-6">
+                <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-2xl bg-blue-50 flex items-center justify-center group-hover:bg-blue-600 transition-colors">
+                        <Download className="w-5 h-5 text-blue-600 group-hover:text-white transition-colors" />
                     </div>
-                    <div className="space-y-2">
-                        <Label>To</Label>
-                        <Input type="date" value={to} onChange={e => setTo(e.target.value)} />
+                    <div>
+                        <h3 className="text-2xl font-black tracking-tighter text-blue-950 uppercase">{title}</h3>
+                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Digital Sequence Module</p>
                     </div>
                 </div>
-                <Button className="w-full" onClick={handleDownload} disabled={loading || !from || !to}>
-                    {loading ? "Generating..." : "Download CSV"}
-                </Button>
-            </CardContent>
-        </Card>
+
+                <p className="text-[11px] font-bold text-slate-400 leading-relaxed italic">{description}</p>
+
+                <div className="grid grid-cols-2 gap-6 pt-4">
+                    <div className="space-y-2">
+                        <Label className="text-[10px] font-black uppercase text-slate-400 tracking-widest ml-1">Sequence Start</Label>
+                        <Input
+                            type="date"
+                            value={from}
+                            onChange={e => setFrom(e.target.value)}
+                            className="h-12 bg-slate-50 border-none rounded-2xl font-black text-xs px-4 focus-visible:ring-blue-600"
+                        />
+                    </div>
+                    <div className="space-y-2">
+                        <Label className="text-[10px] font-black uppercase text-slate-400 tracking-widest ml-1">Sequence End</Label>
+                        <Input
+                            type="date"
+                            value={to}
+                            onChange={e => setTo(e.target.value)}
+                            className="h-12 bg-slate-50 border-none rounded-2xl font-black text-xs px-4 focus-visible:ring-blue-600"
+                        />
+                    </div>
+                </div>
+            </div>
+
+            <Button
+                onClick={handleDownload}
+                disabled={loading || !from || !to}
+                className="mt-10 h-14 w-full rounded-2xl bg-blue-950 hover:bg-blue-900 text-white font-black text-[10px] uppercase tracking-[0.3em] shadow-xl shadow-blue-100 transition-all active:scale-[0.98]"
+            >
+                {loading ? "Synthesizing Archive..." : "Extract Data Stream"}
+            </Button>
+        </div>
     );
 }

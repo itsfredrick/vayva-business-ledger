@@ -33,12 +33,14 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { toast } from "sonner";
+import { FileUpload } from "@/components/ui/file-upload";
 
 const formSchema = z.object({
     category: z.enum(["Operational", "Fuel", "Maintenance", "Food", "Salary", "Other"]),
     who: z.string().min(2, "Receiver name required"),
     amount: z.coerce.number().min(1, "Amount required"),
     reason: z.string().min(2, "Reason required"),
+    receiptUrl: z.string().optional(),
 });
 
 export function AddExpenseDialog({ isEditable }: { isEditable: boolean }) {
@@ -52,6 +54,7 @@ export function AddExpenseDialog({ isEditable }: { isEditable: boolean }) {
             who: "",
             amount: 0,
             reason: "",
+            receiptUrl: "",
         },
     });
 
@@ -62,7 +65,8 @@ export function AddExpenseDialog({ isEditable }: { isEditable: boolean }) {
                 whoTookMoney: values.who,
                 category: values.category,
                 amount: values.amount,
-                reason: values.reason
+                reason: values.reason,
+                receiptUrl: values.receiptUrl
             });
             toast.success("Expense recorded successfully");
             setOpen(false);
@@ -71,6 +75,7 @@ export function AddExpenseDialog({ isEditable }: { isEditable: boolean }) {
                 who: "",
                 amount: 0,
                 reason: "",
+                receiptUrl: "",
             });
         } catch (e: any) {
             toast.error("Failed to record expense", { description: e.message });
@@ -157,6 +162,24 @@ export function AddExpenseDialog({ isEditable }: { isEditable: boolean }) {
                                     <FormLabel>Reason</FormLabel>
                                     <FormControl>
                                         <Textarea placeholder="Details about the expense..." {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
+                        <FormField
+                            control={form.control}
+                            name="receiptUrl"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormControl>
+                                        <FileUpload
+                                            label="Digital Receipt / Proof"
+                                            value={field.value}
+                                            onUploadComplete={field.onChange}
+                                            onRemove={() => field.onChange("")}
+                                        />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>

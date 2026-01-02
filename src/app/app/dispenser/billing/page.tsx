@@ -31,64 +31,72 @@ export default async function DispenserBillingPage() {
     });
 
     return (
-        <div className="space-y-6">
-            <div>
-                <h1 className="text-2xl font-bold">Dispenser Billing</h1>
-                <p className="text-muted-foreground">Generate monthly invoices for contract customers.</p>
+        <div className="flex flex-col gap-10 p-6 md:p-12 max-w-[1400px] mx-auto pb-24">
+            <div className="flex flex-col md:flex-row justify-between md:items-end gap-6">
+                <div className="space-y-1">
+                    <h1 className="text-5xl font-black tracking-tighter text-blue-950 uppercase leading-none">Financial Yields</h1>
+                    <p className="text-slate-400 font-bold uppercase tracking-[0.3em] text-[10px] pl-1">Contract Settlement & Invoicing Engine</p>
+                </div>
             </div>
 
-            <div className="grid gap-6">
+            <div className="grid gap-8">
                 {customers.length === 0 ? (
-                    <div className="p-8 text-center border rounded-lg text-muted-foreground">
-                        No monthly billing customers found.
+                    <div className="p-20 text-center bg-white rounded-[40px] border-2 border-dashed border-slate-100">
+                        <p className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-300">Archive Empty</p>
                     </div>
                 ) : (
                     customers.map(c => {
                         const unbilledCount = c.deliveries.length;
-                        const unbilledValue = c.deliveries.reduce((sum, d) => sum + d.amountExpectedNaira, 0);
+                        const unbilledValue = c.deliveries.reduce((sum: number, d: any) => sum + d.amountExpectedNaira, 0);
                         const lastInvoice = c.invoices[0];
 
                         return (
-                            <Card key={c.id} className="p-6">
-                                <div className="flex justify-between items-start">
+                            <div key={c.id} className="bg-white rounded-[40px] p-10 ring-1 ring-slate-100 shadow-sm flex flex-col md:flex-row gap-10 justify-between">
+                                <div className="space-y-6">
                                     <div>
-                                        <h3 className="text-lg font-bold">{c.name}</h3>
-                                        <div className="text-sm text-muted-foreground">{c.defaultAddress}</div>
-                                        <div className="mt-2 flex gap-4 text-sm">
-                                            <div>Owning Bottles: <span className="font-bold">{c.owingBottles}</span></div>
-                                            <div>Rate: ₦{c.defaultRatePerBottle}</div>
+                                        <h3 className="text-3xl font-black tracking-tighter text-blue-950 uppercase">{c.name}</h3>
+                                        <p className="text-sm font-bold text-slate-400 mt-1 uppercase tracking-widest">{c.defaultAddress || "No Registered Address"}</p>
+                                    </div>
+
+                                    <div className="flex flex-wrap gap-8">
+                                        <div className="space-y-1">
+                                            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Asset Exposure</p>
+                                            <p className="text-xl font-black text-blue-950">{c.owingBottles} <span className="text-xs font-bold opacity-30 italic">Units</span></p>
+                                        </div>
+                                        <div className="space-y-1">
+                                            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Agreed Rate</p>
+                                            <p className="text-xl font-black text-emerald-600">₦{c.defaultRatePerBottle}</p>
                                         </div>
                                     </div>
-                                    <div className="text-right">
-                                        <div className="text-sm text-muted-foreground">Unbilled Deliveries</div>
-                                        <div className="text-2xl font-bold">₦{unbilledValue.toLocaleString()}</div>
-                                        <div className="text-xs text-muted-foreground">{unbilledCount} deliveries pending</div>
-                                    </div>
-                                </div>
 
-                                <div className="mt-6 flex justify-between items-center border-t pt-4">
-                                    <div className="text-sm">
+                                    <div className="pt-4 border-t border-slate-50 flex items-center gap-4">
                                         {lastInvoice ? (
-                                            <>Last Invoice: <strong>{lastInvoice.invoiceMonth}</strong> (₦{lastInvoice.totalAmountNaira.toLocaleString()}) - <Badge variant="outline">{lastInvoice.status}</Badge></>
+                                            <div className="flex items-center gap-3">
+                                                <Badge variant="outline" className="h-8 rounded-lg px-3 font-black text-[10px] uppercase tracking-widest border-blue-100 text-blue-600">
+                                                    {lastInvoice.status}
+                                                </Badge>
+                                                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                                                    LAST: <strong>{lastInvoice.invoiceMonth}</strong> (₦{lastInvoice.totalAmountNaira.toLocaleString()})
+                                                </span>
+                                            </div>
                                         ) : (
-                                            <span className="text-muted-foreground italic">No invoices generated yet</span>
+                                            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest italic opacity-40">No historical settlements</span>
                                         )}
                                     </div>
-
-                                    {/* In a real app, this form action would trigger the generateInvoice server action */}
-                                    {/* For now, we simulate or just show the logic. I will implement a client wrapper if needed, 
-                                but strict server action form works too. */}
-                                    <form action={async () => {
-                                        "use server";
-                                        // This is a bit hacky inside a loop, better to extract component.
-                                        // But for speed, let's extract to a tiny client component or use a specialized action call.
-                                        // Actually, I can't bind complex data easily in a server closure in map loop without extra steps.
-                                        // I'll make a specialized 'GenerateButton' client component.
-                                    }}>
-                                        <GenerateInvoiceButton customerId={c.id} deliveryIds={c.deliveries.map(d => d.id)} disabled={unbilledCount === 0} />
-                                    </form>
                                 </div>
-                            </Card>
+
+                                <div className="flex flex-col items-start md:items-end justify-between min-w-[240px]">
+                                    <div className="text-left md:text-right space-y-2">
+                                        <p className="text-[10px] font-black text-orange-500 uppercase tracking-[0.2em]">Pending Settlement</p>
+                                        <div className="text-5xl font-black text-blue-950 tracking-tighter tabular-nums">₦{unbilledValue.toLocaleString()}</div>
+                                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{unbilledCount} movements ready for cycle</p>
+                                    </div>
+
+                                    <div className="mt-8 md:mt-0 w-full md:w-auto">
+                                        <GenerateInvoiceButton customerId={c.id} deliveryIds={c.deliveries.map((d: any) => d.id)} disabled={unbilledCount === 0} />
+                                    </div>
+                                </div>
+                            </div>
                         )
                     })
                 )}

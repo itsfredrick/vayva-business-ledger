@@ -8,11 +8,12 @@ export default function DashboardLayout({
     children: React.ReactNode;
 }) {
     return (
-        <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
+        <div className="grid min-h-screen w-full md:grid-cols-[240px_1fr] lg:grid-cols-[300px_1fr] bg-white">
             <Sidebar />
-            <div className="flex flex-col">
+            <div className="flex flex-col relative">
+                <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:40px_40px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-20 pointer-events-none" />
                 <Header />
-                <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6 bg-blue-50/20 dark:bg-zinc-950/50">
+                <main className="flex flex-1 flex-col relative z-10">
                     {children}
                 </main>
             </div>

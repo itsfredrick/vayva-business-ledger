@@ -124,24 +124,39 @@ export function DashboardStats({ stats }: { stats: StatsData }) {
 
             {/* Expenses Section */}
             <div className="space-y-4">
-                <div className="flex items-center justify-between border-b pb-2">
-                    <h3 className="font-bold text-sm tracking-tight flex items-center gap-2">
-                        <DollarSign className="w-4 h-4 text-red-500" /> Operational Costs
+                <div className="flex items-center justify-between border-b border-red-50 pb-2">
+                    <h3 className="font-bold text-base tracking-tight flex items-center gap-2 text-slate-900">
+                        <DollarSign className="w-5 h-5 text-red-500" /> Operational Costs
                     </h3>
                 </div>
-                <Card className="bg-zinc-50 dark:bg-zinc-900 shadow-none border-dashed">
-                    <CardContent className="pt-6">
-                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <Card className="border-0 bg-red-50/20 shadow-none ring-1 ring-red-100 rounded-[32px] overflow-hidden">
+                    <CardContent className="p-8">
+                        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
                             <div>
-                                <p className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Total Expenses</p>
-                                <div className="text-4xl font-black tabular-nums mt-1 text-red-600 dark:text-red-400">
+                                <p className="text-[10px] font-black text-red-900/40 uppercase tracking-[0.2em] mb-1">Total Daily Expenses</p>
+                                <div className="text-5xl font-black tabular-nums tracking-tighter text-red-600">
                                     <Money amount={stats.expenses.total} />
                                 </div>
                             </div>
-                            <div className="flex gap-2">
-                                <Badge variant="outline" className="bg-white dark:bg-black">Salary</Badge>
-                                <Badge variant="outline" className="bg-white dark:bg-black">Diesel</Badge>
-                                <Badge variant="outline" className="bg-white dark:bg-black">Maintenance</Badge>
+                            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                                {[
+                                    { label: "Salary", active: true },
+                                    { label: "Diesel", active: true },
+                                    { label: "Repair", active: true },
+                                    { label: "Labels", active: false },
+                                    { label: "Others", active: false },
+                                ].map((tag) => (
+                                    <Badge
+                                        key={tag.label}
+                                        variant="outline"
+                                        className={cn(
+                                            "px-4 py-1.5 rounded-xl border-none font-bold text-[10px] uppercase tracking-wider",
+                                            tag.active ? "bg-red-100 text-red-700" : "bg-white text-slate-400"
+                                        )}
+                                    >
+                                        {tag.label}
+                                    </Badge>
+                                ))}
                             </div>
                         </div>
                     </CardContent>
@@ -167,20 +182,25 @@ function StatCard({
     subtitle?: string
 }) {
     return (
-        <Card className="border shadow-none hover:border-blue-300 transition-colors bg-white/50 backdrop-blur-sm">
-            <CardHeader className="pb-1">
-                <CardTitle className="text-xs font-bold text-muted-foreground/70 uppercase tracking-widest flex justify-between items-center">
+        <Card className="border-0 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-white ring-1 ring-slate-100 rounded-[24px] overflow-hidden">
+            <CardHeader className="pb-2 pt-6 px-6">
+                <CardTitle className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] flex justify-between items-center">
                     {title}
-                    {trend === "UP" && <TrendingUp className="w-3 h-3 text-green-500" />}
-                    {trend === "DOWN" && <TrendingDown className="w-3 h-3 text-red-500" />}
+                    <div className="p-1 rounded-full bg-slate-50">
+                        {trend === "UP" && <TrendingUp className="w-3.5 h-3.5 text-green-500" />}
+                        {trend === "DOWN" && <TrendingDown className="w-3.5 h-3.5 text-red-400" />}
+                        {!trend && <ArrowRight className="w-3.5 h-3.5 text-slate-300" />}
+                    </div>
                 </CardTitle>
             </CardHeader>
-            <CardContent>
-                <div className={cn("text-2xl font-black tabular-nums tracking-tight", valueColor)}>
+            <CardContent className="px-6 pb-6">
+                <div className={cn("text-3xl font-black tabular-nums tracking-tighter text-blue-950", valueColor)}>
                     {isCurrency ? <Money amount={value} /> : value.toLocaleString()}
                 </div>
-                {subtitle && <p className="text-[10px] text-muted-foreground mt-1 font-medium italic">{subtitle}</p>}
+                {subtitle && <p className="text-[10px] text-slate-400 mt-2 font-bold uppercase tracking-tight italic opacity-70">{subtitle}</p>}
             </CardContent>
+            {/* Bottom Accent Decor */}
+            <div className="h-1.5 w-full bg-gradient-to-r from-blue-50 to-white opacity-50" />
         </Card>
     );
 }

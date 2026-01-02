@@ -9,18 +9,20 @@ export default async function DispenserCustomersPage() {
     const customers = await getDispenserCustomers();
 
     return (
-        <div className="space-y-6">
-            <div className="flex justify-between items-center">
-                <div>
-                    <h1 className="text-2xl font-bold">Dispenser Customers</h1>
-                    <p className="text-muted-foreground">Manage customer profiles and rates</p>
+        <div className="flex flex-col gap-10 p-6 md:p-12 max-w-[1400px] mx-auto pb-24">
+            <div className="flex flex-col md:flex-row justify-between md:items-end gap-6">
+                <div className="space-y-1">
+                    <h1 className="text-5xl font-black tracking-tighter text-blue-950 uppercase leading-none">CRM Console</h1>
+                    <p className="text-slate-400 font-bold uppercase tracking-[0.3em] text-[10px] pl-1">Dispenser Client Governance & Rate Management</p>
                 </div>
                 <div>
                     <CustomerDialog />
                 </div>
             </div>
 
-            <CustomerList customers={customers} />
+            <div className="pt-2">
+                <CustomerList customers={customers} />
+            </div>
         </div>
     );
 }

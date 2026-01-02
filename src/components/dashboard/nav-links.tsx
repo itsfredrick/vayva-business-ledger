@@ -80,14 +80,17 @@ export function NavLinks({ role }: { role: string }) {
                         key={link.name}
                         href={link.href}
                         className={clsx(
-                            "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all hover:text-primary",
+                            "flex items-center gap-3 rounded-xl px-4 py-2.5 text-sm font-bold transition-all group",
                             {
-                                "bg-muted text-primary": pathname === link.href,
-                                "text-muted-foreground": pathname !== link.href,
+                                "bg-blue-600 text-white shadow-lg shadow-blue-600/20": pathname === link.href,
+                                "text-slate-500 hover:text-blue-600 hover:bg-blue-50": pathname !== link.href,
                             }
                         )}
                     >
-                        <LinkIcon className="h-4 w-4" />
+                        <LinkIcon className={clsx("h-4.5 w-4.5 transition-colors", {
+                            "text-white": pathname === link.href,
+                            "text-slate-400 group-hover:text-blue-500": pathname !== link.href
+                        })} />
                         {link.name}
                     </Link>
                 );
